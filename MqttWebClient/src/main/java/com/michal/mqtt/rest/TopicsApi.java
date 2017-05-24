@@ -33,11 +33,11 @@ public class TopicsApi {
 			Topic topic = new Topic(data.getString("topic"), client.getBroker());
 			topicRepo.createTopic(topic);
 			client.getBroker().getTopics().add(topic);
-			return new ResponseEntity<String>("Topic added",HttpStatus.OK);
-		}else{
-			return new ResponseEntity<String>("No MQTT client found",HttpStatus.PRECONDITION_FAILED);
+			return new ResponseEntity<String>("Topic added", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("No MQTT client found", HttpStatus.PRECONDITION_FAILED);
 		}
-		
+
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/brokerId={brokerId}/topicId={topicId}")
@@ -56,10 +56,10 @@ public class TopicsApi {
 				}
 				return new ResponseEntity<String>(HttpStatus.OK);
 			} else {
-				return new ResponseEntity<String>("Cannot find topic to remove",HttpStatus.PRECONDITION_FAILED);
+				return new ResponseEntity<String>("Cannot find topic to remove", HttpStatus.PRECONDITION_FAILED);
 			}
 		}
-		return new ResponseEntity<String>("No MQTT client found",HttpStatus.PRECONDITION_FAILED);
+		return new ResponseEntity<String>("No MQTT client found", HttpStatus.PRECONDITION_FAILED);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/subscribe/brokerId={brokerId}?topicId={topicId}")
