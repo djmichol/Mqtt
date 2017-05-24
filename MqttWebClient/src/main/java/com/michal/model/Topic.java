@@ -2,7 +2,6 @@ package com.michal.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +28,7 @@ public class Topic implements Serializable{
 	@Column(name = "topic_name", nullable = false)
 	private String topic;
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "mqtt_broker_id", nullable = false)
 	private Broker broker;
 	@Transient

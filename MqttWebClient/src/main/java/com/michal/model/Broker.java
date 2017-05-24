@@ -29,7 +29,7 @@ public class Broker implements Serializable {
 	private String user;
 	@Column(name = "broker_password", nullable = false)
 	private String password;
-	@OneToMany(mappedBy = "broker", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "broker", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private Set<Topic> topics = new HashSet<Topic>(0);
 
 	public Broker() {

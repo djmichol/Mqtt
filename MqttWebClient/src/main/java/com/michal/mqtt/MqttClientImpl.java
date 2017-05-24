@@ -13,7 +13,7 @@ import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import com.michal.model.Broker;
-import com.michal.mqtt.callback.DataBaseCallback;
+import com.michal.mqtt.callback.SensorDataCallback;
 
 public class MqttClientImpl implements Serializable {
 
@@ -35,41 +35,41 @@ public class MqttClientImpl implements Serializable {
 		connectionOptions.setPassword(broker.getPassword().toCharArray());
 	}
 
-	public boolean connect() {
+	public boolean connect() throws MqttSecurityException, MqttException {
 		logger.info("mqtt-client connecting to broker: " + client.getServerURI());
 		try {
 			client.connect(connectionOptions);
-			client.setCallback(new DataBaseCallback(this));
+			client.setCallback(new SensorDataCallback(this));
 			logger.info("mqtt-client connected");
 			return true;
 		} catch (MqttSecurityException e) {
 			logger.error("mqtt-client connecting to broker: " + client.getServerURI(),"auth problem",e);
-			return false;
+			throw e;
 		} catch (MqttException e) {
 			logger.error("mqtt-client connecting to broker: " + client.getServerURI()," Problem try to reconnect",e);
-			return false;
+			throw e;
 		}		
 	}
 
-	public boolean subscribeTopic(String topic) {
+	public boolean subscribeTopic(String topic) throws MqttException {
 		try {
 			client.subscribe(topic, 0);
 			logger.info("Subscribed topic '{}'", topic);
 			return true;
 		} catch (MqttException ex) {
 			logger.error("Unable to subscribe topic '{}' for {}", topic, ex);
-			return false;
+			throw ex;
 		}
 	}
 	
-	public boolean unsubscribeTopic(String topic) {
+	public boolean unsubscribeTopic(String topic) throws MqttException {
 		try {
 			client.unsubscribe(topic);
 			logger.info("Unsubscribed topic '{}'", topic);
 			return true;
 		} catch (MqttException ex) {
 			logger.error("Unable to unsubscribed topic '{}' for {}", topic, ex);
-			return false;
+			throw ex;
 		}
 	}
 
@@ -84,14 +84,14 @@ public class MqttClientImpl implements Serializable {
 		}
 	}
 
-	public boolean disconnect(){
+	public boolean disconnect() throws MqttException{
 		try {
 			client.disconnect();
 			logger.info("mqtt-client disconnected");
 			return true;
 		} catch (MqttException e) {
 			logger.info("mqtt-client failed to disconnect", e);
-			return false;
+			throw e;
 		}		
 	}
 

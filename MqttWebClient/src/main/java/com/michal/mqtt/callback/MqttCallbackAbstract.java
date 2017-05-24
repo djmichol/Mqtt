@@ -25,10 +25,10 @@ public abstract class MqttCallbackAbstract implements MqttCallback {
 
 	private void reconnect(Long reconnectInvertal) {
 		while (!client.isConnected()) {
-			client.connect();
 			try {
+				client.connect();
 				Thread.sleep(reconnectInvertal);
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
 				logger.error(e);
 			}
 		}

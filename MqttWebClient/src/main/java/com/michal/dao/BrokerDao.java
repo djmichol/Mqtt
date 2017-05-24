@@ -9,7 +9,6 @@ public interface BrokerDao {
 	Broker create(Broker broker);
 	List<Broker> getAllBrokers();
 	Broker getById(Long id);
-	Broker getByURI(String uri);
 	boolean removeBroker(Long id);
 	
 }

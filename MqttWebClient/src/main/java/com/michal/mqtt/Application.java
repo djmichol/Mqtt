@@ -1,4 +1,4 @@
-package com.michal.app;
+package com.michal.mqtt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.michal.dao.BrokerDao;
 import com.michal.model.Broker;
-import com.michal.mqtt.MqttClientImpl;
 
 @Component
 @Scope("singleton")

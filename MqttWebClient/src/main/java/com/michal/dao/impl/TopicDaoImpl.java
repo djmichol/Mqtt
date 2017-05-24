@@ -1,4 +1,4 @@
-package com.michal.dao;
+package com.michal.dao.impl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -6,6 +6,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.michal.dao.TopicDao;
 import com.michal.model.Topic;
 
 @Repository
@@ -34,6 +35,7 @@ public class TopicDaoImpl implements TopicDao {
 		Topic topic = getTopicById(id);
 		if (topic != null) {
 			entityManager.remove(topic);
+			entityManager.flush();
 			return true;
 		} else {
 			return false;
