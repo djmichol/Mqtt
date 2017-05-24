@@ -17,7 +17,7 @@ import com.michal.mqtt.Application;
 import com.michal.mqtt.MqttClientImpl;
 
 @RestController
-@RequestMapping("/topic")
+@RequestMapping("/client/topic")
 public class TopicsApi {
 
 	@Autowired
@@ -62,7 +62,7 @@ public class TopicsApi {
 		return new ResponseEntity<String>("No MQTT client found",HttpStatus.PRECONDITION_FAILED);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/brokerId={brokerId}/subscribe/topicId={topicId}")
+	@RequestMapping(method = RequestMethod.POST, value = "/subscribe/brokerId={brokerId}?topicId={topicId}")
 	public ResponseEntity<String> subscribeTopic(@PathVariable("brokerId") Long brokerId, @PathVariable("topicId") Long topicId) {
 		MqttClientImpl client = application.getByBrokerId(brokerId);
 		if (client != null) {
@@ -82,7 +82,7 @@ public class TopicsApi {
 		return new ResponseEntity<String>("Cannot subscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/brokerId={brokerId}/unsubscribe/topicId={topicId}")
+	@RequestMapping(method = RequestMethod.POST, value = "/unsubscribe/brokerId={brokerId}?topicId={topicId}")
 	public ResponseEntity<String> unsubscribeTopic(@PathVariable("brokerId") Long brokerId, @PathVariable("topicId") Long topicId) {
 		MqttClientImpl client = application.getByBrokerId(brokerId);
 		if (client != null) {
@@ -102,7 +102,7 @@ public class TopicsApi {
 		return new ResponseEntity<String>("Cannot unsubscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/brokerId={brokerId}/publish/topicId={topicId}")
+	@RequestMapping(method = RequestMethod.POST, value = "/publish/brokerId={brokerId}?topicId={topicId}")
 	public ResponseEntity<String> publishToTopic(@PathVariable("brokerId") Long brokerId, @PathVariable("topicId") Long topicId, @RequestBody String message) {
 		MqttClientImpl client = application.getByBrokerId(brokerId);
 		if (client != null) {
@@ -118,7 +118,7 @@ public class TopicsApi {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/brokerId={brokerId}/publish")
+	@RequestMapping(method = RequestMethod.POST, value = "/publish/brokerId={brokerId}")
 	public ResponseEntity<String> publishMessage(@PathVariable("brokerId") Long brokerId, @RequestBody String messageWithTopic) {
 		MqttClientImpl client = application.getByBrokerId(brokerId);
 		if (client != null) {
