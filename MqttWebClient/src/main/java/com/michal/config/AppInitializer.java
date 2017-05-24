@@ -1,12 +1,15 @@
 package com.michal.config;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { AppConfig.class };
+    	Configurator.setRootLevel(Level.DEBUG);
+        return new Class[] { AppConfig.class, SpringApplicationContext.class };
     }
   
     @Override

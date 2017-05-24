@@ -1,11 +1,10 @@
 package com.michal.mqtt;
 
-import org.apache.logging.log4j.Level;
+import java.beans.Transient;
+import java.io.Serializable;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -13,51 +12,64 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class MqttClientImpl implements MqttCallback {
+import com.michal.model.Broker;
+import com.michal.mqtt.callback.DataBaseCallback;
+
+public class MqttClientImpl implements Serializable {
+
+	private static final long serialVersionUID = 7190209816225844141L;
 
 	final Logger logger = LogManager.getLogger(MqttClientImpl.class);
 
-	private MqttClient client;
-	private MqttConnectOptions connectionOptions;
+	private transient MqttClient client;
+	private transient MqttConnectOptions connectionOptions;
+	private Broker broker;
 
-	public MqttClientImpl(String broker, String clientId, String userName, String password) throws MqttException {
-		Configurator.setLevel(logger.getName(), Level.DEBUG);
-		client = new MqttClient(broker, clientId, new MemoryPersistence());
+	public MqttClientImpl(Broker broker, String clientId) throws MqttException{
+		this.broker = broker;
+		client = new MqttClient(broker.getUri(), clientId, new MemoryPersistence());
 		connectionOptions = new MqttConnectOptions();
 		connectionOptions.setCleanSession(true);
 		connectionOptions.setAutomaticReconnect(true);
-		connectionOptions.setUserName(userName);
-		connectionOptions.setPassword(password.toCharArray());
+		connectionOptions.setUserName(broker.getUser());
+		connectionOptions.setPassword(broker.getPassword().toCharArray());
 	}
 
-	public void connect() {
+	public boolean connect() {
 		logger.info("mqtt-client connecting to broker: " + client.getServerURI());
 		try {
 			client.connect(connectionOptions);
+			client.setCallback(new DataBaseCallback(this));
+			logger.info("mqtt-client connected");
+			return true;
 		} catch (MqttSecurityException e) {
-			logger.error("mqtt-client connecting to broker: " + client.getServerURI(),"auth problem",e.getMessage());
+			logger.error("mqtt-client connecting to broker: " + client.getServerURI(),"auth problem",e);
+			return false;
 		} catch (MqttException e) {
-			logger.error("mqtt-client connecting to broker: " + client.getServerURI()," Problem try to reconnect",e.getMessage());
-			reconnect(3000L);
-		}
-		logger.info("mqtt-client connected");
+			logger.error("mqtt-client connecting to broker: " + client.getServerURI()," Problem try to reconnect",e);
+			return false;
+		}		
 	}
 
-	public void subscribeTopic(String topic) {
+	public boolean subscribeTopic(String topic) {
 		try {
 			client.subscribe(topic, 0);
 			logger.info("Subscribed topic '{}'", topic);
+			return true;
 		} catch (MqttException ex) {
 			logger.error("Unable to subscribe topic '{}' for {}", topic, ex);
+			return false;
 		}
 	}
 	
-	public void unsubscribeTopic(String topic) {
+	public boolean unsubscribeTopic(String topic) {
 		try {
 			client.unsubscribe(topic);
 			logger.info("Unsubscribed topic '{}'", topic);
+			return true;
 		} catch (MqttException ex) {
 			logger.error("Unable to unsubscribed topic '{}' for {}", topic, ex);
+			return false;
 		}
 	}
 
@@ -72,43 +84,26 @@ public class MqttClientImpl implements MqttCallback {
 		}
 	}
 
-	public void disconnect() throws MqttException {
-		client.disconnect();
-		logger.info("mqtt-client disconnected");
+	public boolean disconnect(){
+		try {
+			client.disconnect();
+			logger.info("mqtt-client disconnected");
+			return true;
+		} catch (MqttException e) {
+			logger.info("mqtt-client failed to disconnect", e);
+			return false;
+		}		
 	}
 
-	@Override
-	public void connectionLost(Throwable cause) {
-		logger.error("Connection to Mqtt broker lost for {}", cause.getCause());
-		logger.error("Reconnecting in progress ...");
-		reconnect(1000L);
+	public Broker getBroker() {
+		return broker;
 	}
 
-	private void reconnect(Long reconnectInvertal) {
-		while (!client.isConnected()) {
-			try {
-				client.connect(connectionOptions);
-			} catch (MqttException e) {
-				logger.error("Unable to connect to broker {}", client.getServerURI() + " for " + e.getMessage());
-			}
-			try {
-				Thread.sleep(reconnectInvertal);
-			} catch (InterruptedException e) {
-				logger.error(e);
-			}
-		}
+	public boolean isConnected() {
+		return client.isConnected();
 	}
 
-	@Override
-	public void deliveryComplete(IMqttDeliveryToken arg0) {
-		logger.info("Message published succesfull!!!");
-	}
-
-	@Override
-	public void messageArrived(String arg0, MqttMessage arg1) throws Exception {
-		logger.info("Message arrived succesfull!!!","topic:",arg0,"message",arg1.getPayload());
-	}
-
+	@Transient
 	public MqttClient getClient() {
 		return client;
 	}
