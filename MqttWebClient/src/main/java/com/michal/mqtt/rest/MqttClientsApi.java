@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,19 +37,17 @@ public class MqttClientsApi {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> addNewBroker(@RequestBody String brokerData) {
-		JSONObject data = new JSONObject(brokerData);
-		Broker broker = new Broker(data.getString("uri"), data.getString("user"), data.getString("password"));
-		broker = brokerRepo.create(broker);
+	public ResponseEntity<?> addNewBroker(@RequestBody Broker brokerData) {
+		brokerData = brokerRepo.create(new Broker(brokerData.getUri(), brokerData.getUser(), brokerData.getPassword()));
 		try {
-			application.getBrokers().add(new MqttClientImpl(broker, Application.CLIENT_ID));
+			application.getBrokers().add(new MqttClientImpl(brokerData, Application.CLIENT_ID));
 		} catch (MqttException e) {
 			logger.error(e);
 		}
 		return new ResponseEntity<String>("Broker added", HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/brokerId={brokerId}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{brokerId}")
 	public ResponseEntity<String> removeBroker(@PathVariable("brokerId") Long brokerId) {
 		if (brokerRepo.removeBroker(brokerId)) {
 			MqttClientImpl client = application.getByBrokerId(brokerId);
@@ -61,7 +58,7 @@ public class MqttClientsApi {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/connect/brokerId={brokerId}")
+	@RequestMapping(method = RequestMethod.POST, value = "/connect/{brokerId}")
 	public ResponseEntity<String> connectToBroker(@PathVariable("brokerId") Long brokerId) {
 		try {
 			if (application.getByBrokerId(brokerId).connect()) {
@@ -75,7 +72,7 @@ public class MqttClientsApi {
 		return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/disconnect/brokerId={brokerId}")
+	@RequestMapping(method = RequestMethod.POST, value = "/disconnect/{brokerId}")
 	public ResponseEntity<String> disconnectToBroker(@PathVariable("brokerId") Long brokerId) {
 		try {
 			if (application.getByBrokerId(brokerId).disconnect()) {

@@ -26,7 +26,7 @@ public class SensorDataApi {
 		return new ResponseEntity<List<SensorData>>(sensorDataRepo.getAllData(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/topic={topic}")
+	@RequestMapping(method = RequestMethod.GET, value = "/{topic}")
 	public ResponseEntity<List<SensorData>> getAllTopicData(@PathVariable("topic") String topic) throws MqttException {
 		return new ResponseEntity<List<SensorData>>(sensorDataRepo.getDataByType(topic), HttpStatus.OK);
 	}	

@@ -6,10 +6,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SpringApplicationContext implements ApplicationContextAware {
+public class MqttApplicationContext implements ApplicationContextAware {
 
 	private static ApplicationContext CONTEXT;
 
+	@Override
 	public void setApplicationContext(ApplicationContext context) throws BeansException {
 		CONTEXT = context;
 	}

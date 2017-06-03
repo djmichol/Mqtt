@@ -19,16 +19,21 @@ import javax.persistence.Table;
 public class Broker implements Serializable {
 
 	private static final long serialVersionUID = -4177899607190590832L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "broker_id")
 	private Long id;
+	
 	@Column(name = "broker_uri", nullable = false, unique = true)
 	private String uri;
+	
 	@Column(name = "broker_user", nullable = false)
 	private String user;
+	
 	@Column(name = "broker_password", nullable = false)
 	private String password;
+	
 	@OneToMany(mappedBy = "broker", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private Set<Topic> topics = new HashSet<Topic>(0);
 

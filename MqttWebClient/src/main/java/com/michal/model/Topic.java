@@ -25,12 +25,15 @@ public class Topic implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "topic_id")
 	private Long topicId;
+	
 	@Column(name = "topic_name", nullable = false)
 	private String topic;
-	@JsonIgnore
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "mqtt_broker_id", nullable = false)
+	@JsonIgnore
 	private Broker broker;
+	
 	@Transient
 	private boolean subscribed = false;
 	
