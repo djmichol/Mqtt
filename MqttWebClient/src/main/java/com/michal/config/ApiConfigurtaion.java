@@ -37,7 +37,7 @@ public class ApiConfigurtaion {
     }
 
     @Bean
-    public ClientsApi mqttClientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo) {
+    public ClientsApi clientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo) {
         return new ClientsApi(mqttApplication, brokerRepo);
     }
 
