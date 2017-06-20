@@ -1,6 +1,6 @@
 package com.michal.dao;
 
-import com.michal.model.Topic;
+import com.michal.dao.model.Topic;
 
 public interface TopicDao {
 

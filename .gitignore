@@ -22,3 +22,5 @@
 hs_err_pid*
 MqttWebClient/.idea/
 MqttWebClient/MqttWebClient.iml
+.idea/
+test/

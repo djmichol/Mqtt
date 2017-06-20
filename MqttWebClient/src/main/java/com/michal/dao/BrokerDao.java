@@ -2,7 +2,7 @@ package com.michal.dao;
 
 import java.util.List;
 
-import com.michal.model.Broker;
+import com.michal.dao.model.Broker;
 
 public interface BrokerDao {
 	

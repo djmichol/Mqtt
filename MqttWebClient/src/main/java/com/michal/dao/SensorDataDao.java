@@ -2,7 +2,7 @@ package com.michal.dao;
 
 import java.util.List;
 
-import com.michal.model.SensorData;
+import com.michal.dao.model.SensorData;
 
 public interface SensorDataDao {
 

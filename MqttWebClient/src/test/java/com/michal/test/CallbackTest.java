@@ -9,16 +9,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.michal.config.DataBaseConfig;
-import com.michal.config.MqttApplicationContext;
-import com.michal.config.MqqtApplicationConfiguration;
+import com.michal.config.MqttApplicationConfiguration;
 import com.michal.dao.SensorDataDao;
-import com.michal.model.Broker;
+import com.michal.dao.model.Broker;
 import com.michal.mqtt.MqttClientImpl;
 import com.michal.mqtt.callback.SensorDataCallback;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {MqttApplicationContext.class, MqqtApplicationConfiguration.class, DataBaseConfig.class})
+@ContextConfiguration(classes = {MqttApplicationConfiguration.class})
 @WebAppConfiguration
 public class CallbackTest {
 

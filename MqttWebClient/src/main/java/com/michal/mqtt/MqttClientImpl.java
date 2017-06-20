@@ -12,7 +12,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import com.michal.model.Broker;
+import com.michal.dao.model.Broker;
 import com.michal.mqtt.callback.SensorDataCallback;
 
 public class MqttClientImpl implements Serializable {
@@ -35,7 +35,7 @@ public class MqttClientImpl implements Serializable {
 		connectionOptions.setPassword(broker.getPassword().toCharArray());
 	}
 
-	public boolean connect() throws MqttSecurityException, MqttException {
+	public boolean connect() throws MqttException {
 		logger.info("mqtt-client connecting to broker: " + client.getServerURI());
 		try {
 			client.connect(connectionOptions);

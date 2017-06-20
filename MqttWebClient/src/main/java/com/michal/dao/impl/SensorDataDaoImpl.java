@@ -6,13 +6,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.michal.dao.SensorDataDao;
-import com.michal.model.SensorData;
+import com.michal.dao.model.SensorData;
 
-@Repository
 public class SensorDataDaoImpl implements SensorDataDao {
 
 	@PersistenceContext

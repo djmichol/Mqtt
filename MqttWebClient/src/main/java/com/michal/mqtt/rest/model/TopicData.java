@@ -1,6 +1,8 @@
 package com.michal.mqtt.rest.model;
 
-public class TopicData {
+import java.io.Serializable;
+
+public class TopicData implements Serializable {
 
 	public TopicData(){}
 	

@@ -2,14 +2,14 @@ package com.michal.mqtt.callback;
 
 import java.util.Date;
 
+import com.michal.config.MqttApplicationConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import com.michal.config.MqttApplicationContext;
 import com.michal.dao.SensorDataDao;
-import com.michal.model.SensorData;
+import com.michal.dao.model.SensorData;
 import com.michal.mqtt.MqttClientImpl;
 
 public class SensorDataCallback extends MqttCallbackAbstract{
@@ -20,7 +20,7 @@ public class SensorDataCallback extends MqttCallbackAbstract{
 	
 	public SensorDataCallback(MqttClientImpl client) {
 		super(client);
-		dataRepo = (SensorDataDao) MqttApplicationContext.getBean(SensorDataDao.class);		
+		dataRepo = (SensorDataDao) MqttApplicationConfiguration.getBean(SensorDataDao.class);
 	}
 	
 	@Override
