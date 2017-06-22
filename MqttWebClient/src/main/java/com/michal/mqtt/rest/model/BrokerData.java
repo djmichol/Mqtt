@@ -2,6 +2,7 @@ package com.michal.mqtt.rest.model;
 
 import com.michal.mqtt.callback.CallbackEnum;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class BrokerData implements Serializable {
@@ -9,9 +10,13 @@ public class BrokerData implements Serializable {
     public BrokerData() {
     }
 
+    @NotNull
     private String url;
+    @NotNull
     private String user;
+    @NotNull
     private String password;
+    @NotNull
     private CallbackEnum callbackEnum;
 
     public String getUrl() {

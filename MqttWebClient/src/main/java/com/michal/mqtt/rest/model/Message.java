@@ -1,13 +1,19 @@
 package com.michal.mqtt.rest.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class Message implements Serializable{
 
 	private static final long serialVersionUID = 8166265136463374309L;
-	
+
+	@NotEmpty(message = "Topic can't be empty!")
 	private String topic;
+	@NotEmpty(message = "Message can't be empty!")
 	private String message;
+	@NotNull(message = "Broker can't be null!")
 	private Long brokerId;
 	
 	public Message(){}

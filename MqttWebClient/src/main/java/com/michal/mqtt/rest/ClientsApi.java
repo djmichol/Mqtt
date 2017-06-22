@@ -20,6 +20,8 @@ import com.michal.dao.model.Broker;
 import com.michal.mqtt.MqttApplication;
 import com.michal.mqtt.MqttClientImpl;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/client")
 public class ClientsApi {
@@ -40,7 +42,7 @@ public class ClientsApi {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addNewBroker(@RequestBody BrokerData brokerData) throws MqttException {
+    public ResponseEntity<?> addNewBroker(@Valid @RequestBody BrokerData brokerData) throws MqttException {
         Broker broker = brokerRepo.create(new Broker(brokerData.getUrl(), brokerData.getUser(), brokerData.getPassword(), brokerData.getCallbackEnum()));
         mqttApplication.getBrokers().add(new MqttClientImpl(broker, MqttApplication.CLIENT_ID));
         return new ResponseEntity<>("Broker added", HttpStatus.OK);
@@ -58,25 +60,17 @@ public class ClientsApi {
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/connect/{brokerId}")
-    public ResponseEntity<String> connectToBroker(@PathVariable("brokerId") Long brokerId) {
-        try {
-            if (mqttApplication.getByBrokerId(brokerId).connect()) {
-                return new ResponseEntity<>("Client connected", HttpStatus.OK);
-            }
-        } catch (MqttException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<String> connectToBroker(@PathVariable("brokerId") Long brokerId) throws MqttException {
+        if (mqttApplication.getByBrokerId(brokerId).connect()) {
+            return new ResponseEntity<>("Client connected", HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/disconnect/{brokerId}")
-    public ResponseEntity<String> disconnectToBroker(@PathVariable("brokerId") Long brokerId) {
-        try {
-            if (mqttApplication.getByBrokerId(brokerId).disconnect()) {
-                return new ResponseEntity<>("Client disconnected", HttpStatus.OK);
-            }
-        } catch (MqttException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<String> disconnectToBroker(@PathVariable("brokerId") Long brokerId) throws MqttException {
+        if (mqttApplication.getByBrokerId(brokerId).disconnect()) {
+            return new ResponseEntity<>("Client disconnected", HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
