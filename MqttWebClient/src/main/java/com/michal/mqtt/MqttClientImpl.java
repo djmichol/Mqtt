@@ -3,6 +3,7 @@ package com.michal.mqtt;
 import java.beans.Transient;
 import java.io.Serializable;
 
+import com.michal.mqtt.callback.CallbackFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -39,7 +40,7 @@ public class MqttClientImpl implements Serializable {
 		logger.info("mqtt-client connecting to broker: " + client.getServerURI());
 		try {
 			client.connect(connectionOptions);
-			client.setCallback(new SensorDataCallback(this));
+			client.setCallback(CallbackFactory.createCallback(broker.getCallbackEnum(),this));
 			logger.info("mqtt-client connected");
 			return true;
 		} catch (MqttSecurityException e) {

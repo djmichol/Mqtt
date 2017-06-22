@@ -1,8 +1,10 @@
 package com.michal.mqtt.rest.model;
 
+import com.michal.mqtt.callback.CallbackEnum;
+
 import java.io.Serializable;
 
-public class BrokerData implements Serializable{
+public class BrokerData implements Serializable {
 
     public BrokerData() {
     }
@@ -10,6 +12,7 @@ public class BrokerData implements Serializable{
     private String url;
     private String user;
     private String password;
+    private CallbackEnum callbackEnum;
 
     public String getUrl() {
         return url;
@@ -33,5 +36,13 @@ public class BrokerData implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public CallbackEnum getCallbackEnum() {
+        return callbackEnum;
+    }
+
+    public void setCallbackEnum(CallbackEnum callbackEnum) {
+        this.callbackEnum = callbackEnum;
     }
 }

@@ -1,4 +1,5 @@
 package com.michal.test;
+import com.michal.mqtt.callback.CallbackEnum;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -25,7 +26,7 @@ public class MqttClientTest {
 	@Test
 	public void connectionTest() throws MqttException{
 		Configurator.setRootLevel(Level.DEBUG);
-		Broker broker = new Broker(URL, USER, PASSWORD);
+		Broker broker = new Broker(URL, USER, PASSWORD, CallbackEnum.PRINT_CALLBACK);
 		MqttClientImpl client = new MqttClientImpl(broker,"testClient");
 		client.connect();
 		Assert.assertTrue(client.isConnected());

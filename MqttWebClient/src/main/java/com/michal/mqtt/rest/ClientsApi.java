@@ -2,6 +2,7 @@ package com.michal.mqtt.rest;
 
 import java.util.List;
 
+import com.michal.mqtt.callback.CallbackEnum;
 import com.michal.mqtt.rest.model.BrokerData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +41,7 @@ public class ClientsApi {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addNewBroker(@RequestBody BrokerData brokerData) throws MqttException {
-        Broker broker = brokerRepo.create(new Broker(brokerData.getUrl(), brokerData.getUser(), brokerData.getPassword()));
+        Broker broker = brokerRepo.create(new Broker(brokerData.getUrl(), brokerData.getUser(), brokerData.getPassword(), brokerData.getCallbackEnum()));
         mqttApplication.getBrokers().add(new MqttClientImpl(broker, MqttApplication.CLIENT_ID));
         return new ResponseEntity<>("Broker added", HttpStatus.OK);
     }
