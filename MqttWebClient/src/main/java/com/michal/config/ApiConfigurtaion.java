@@ -4,6 +4,7 @@ import com.michal.dao.BrokerDao;
 import com.michal.dao.SensorDataDao;
 import com.michal.dao.TopicDao;
 import com.michal.mqtt.MqttApplication;
+import com.michal.mqtt.error.ExceptionController;
 import com.michal.mqtt.rest.MessageApi;
 import com.michal.mqtt.rest.ClientsApi;
 import com.michal.mqtt.rest.SensorDataApi;
@@ -39,6 +40,11 @@ public class ApiConfigurtaion {
     @Bean
     public ClientsApi clientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo) {
         return new ClientsApi(mqttApplication, brokerRepo);
+    }
+
+    @Bean
+    public ExceptionController exceptionController(){
+        return new ExceptionController();
     }
 
 }
