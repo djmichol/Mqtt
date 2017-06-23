@@ -1,25 +1,23 @@
 package com.michal.mqtt.rest.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class TopicData implements Serializable {
 
 	public TopicData(){}
-	
+
+	@NotNull
 	private Long brokerId;
-	private Long topicId;
+	@NotEmpty
 	private String topic;
 	public Long getBrokerId() {
 		return brokerId;
 	}
 	public void setBrokerId(Long brokerId) {
 		this.brokerId = brokerId;
-	}
-	public Long getTopicId() {
-		return topicId;
-	}
-	public void setTopicId(Long topicId) {
-		this.topicId = topicId;
 	}
 	public String getTopic() {
 		return topic;

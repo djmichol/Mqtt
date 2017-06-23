@@ -8,5 +8,7 @@ public interface TopicDao {
 
 	Topic getTopicById(Long id);
 
+	Topic getTopicByNameAndBorkerId(String topic, Long brokerId);
+
 	boolean removeTopic(Long id);
 }

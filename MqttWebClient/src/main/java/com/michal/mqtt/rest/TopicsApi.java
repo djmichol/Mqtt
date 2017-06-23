@@ -16,13 +16,13 @@ import com.michal.mqtt.MqttApplication;
 import com.michal.mqtt.MqttClientImpl;
 import com.michal.mqtt.rest.model.TopicData;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/client/topic")
 public class TopicsApi {
 
-    @Autowired
     private TopicDao topicRepo;
-    @Autowired
     private MqttApplication mqttApplication;
 
     public TopicsApi(TopicDao topicRepo, MqttApplication mqttApplication) {
@@ -31,27 +31,27 @@ public class TopicsApi {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "")
-    public ResponseEntity<?> addTopicToBroker(@RequestBody TopicData topicData) {
+    public ResponseEntity<?> addTopicToBroker(@Valid @RequestBody TopicData topicData) {
         MqttClientImpl client = mqttApplication.getByBrokerId(topicData.getBrokerId());
         if (client != null) {
             Topic topic = topicRepo.createTopic(new Topic(topicData.getTopic(), client.getBroker()));
             client.getBroker().getTopics().add(topic);
-            return new ResponseEntity<String>("Topic added", HttpStatus.OK);
+            return new ResponseEntity<>("Topic added", HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("No MQTT client found", HttpStatus.PRECONDITION_FAILED);
+            return new ResponseEntity<>("No MQTT client found", HttpStatus.PRECONDITION_FAILED);
         }
-
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "")
-    public ResponseEntity<?> removeTopic(@RequestBody TopicData topicData) {
+    public ResponseEntity<?> removeTopic(@Valid @RequestBody TopicData topicData) {
         MqttClientImpl client = mqttApplication.getByBrokerId(topicData.getBrokerId());
+        Topic topicToRemove = topicRepo.getTopicByNameAndBorkerId(topicData.getTopic(),topicData.getBrokerId());
         if (client != null) {
-            if (topicRepo.removeTopic(topicData.getTopicId())) {
+            if (topicRepo.removeTopic(topicToRemove.getTopicId())) {
                 Topic toRemove = null;
-                for (Topic topic : client.getBroker().getTopics()) {
-                    if (topic.getTopicId().equals(topicData.getTopicId())) {
-                        toRemove = topic;
+                for (Topic clientTopic : client.getBroker().getTopics()) {
+                    if (clientTopic.getTopicId().equals(topicToRemove.getTopicId())) {
+                        toRemove = clientTopic;
                     }
                 }
                 if (toRemove != null) {
@@ -65,35 +65,36 @@ public class TopicsApi {
         return new ResponseEntity<>("No MQTT client found", HttpStatus.PRECONDITION_FAILED);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/subscribe/{brokerId}/{topicId}")
-    public ResponseEntity<String> subscribeTopic(@PathVariable("brokerId") Long brokerId, @PathVariable("topicId") Long topicId) throws MqttException {
-        if(changeTopicSubStatus(brokerId,topicId)){
-            return new ResponseEntity<String>("Topic: " + topicId + " subscribed", HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.PATCH, value = "/subscribe")
+    public ResponseEntity<String> subscribeTopic(@Valid @RequestBody TopicData topicData) throws MqttException {
+        if(changeTopicSubStatus(topicData)){
+            return new ResponseEntity<>("Topic: " + topicData.getTopic() + " subscribed", HttpStatus.OK);
         }
         return new ResponseEntity<>("Cannot subscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/unsubscribe/{brokerId}/{topicId}")
-    public ResponseEntity<String> unsubscribeTopic(@PathVariable("brokerId") Long brokerId, @PathVariable("topicId") Long topicId) throws MqttException {
-        if(changeTopicSubStatus(brokerId,topicId)){
-            return new ResponseEntity<String>("Topic: " + topicId + " unsubscribed", HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.PATCH, value = "/unsubscribe")
+    public ResponseEntity<String> unsubscribeTopic(@Valid @RequestBody TopicData topicData) throws MqttException {
+        if(changeTopicSubStatus(topicData)){
+            return new ResponseEntity<>("Topic: " + topicData.getTopic() + " unsubscribed", HttpStatus.OK);
         }
         return new ResponseEntity<>("Cannot unsubscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private boolean changeTopicSubStatus(Long brokerId, Long topicId) throws MqttException {
-        MqttClientImpl client = mqttApplication.getByBrokerId(brokerId);
+    private boolean changeTopicSubStatus(TopicData topicData) throws MqttException {
+        Topic topic = topicRepo.getTopicByNameAndBorkerId(topicData.getTopic(),topicData.getBrokerId());
+        MqttClientImpl client = mqttApplication.getByBrokerId(topicData.getBrokerId());
         if (client != null) {
-            for (Topic topic : client.getBroker().getTopics()) {
-                if (topic.getTopicId().equals(topicId)) {
-                    if (topic.isSubscribed()) {
-                        if (client.unsubscribeTopic(topic.getTopic())) {
-                            topic.setSubscribed(false);
+            for (Topic clientTopic : client.getBroker().getTopics()) {
+                if (clientTopic.getTopicId().equals(topic.getTopicId())) {
+                    if (clientTopic.isSubscribed()) {
+                        if (client.unsubscribeTopic(clientTopic.getTopic())) {
+                            clientTopic.setSubscribed(false);
                             return true;
                         }
                     } else {
-                        if (client.subscribeTopic(topic.getTopic())) {
-                            topic.setSubscribed(true);
+                        if (client.subscribeTopic(clientTopic.getTopic())) {
+                            clientTopic.setSubscribed(true);
                             return true;
                         }
                     }
