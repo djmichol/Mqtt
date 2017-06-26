@@ -9,6 +9,7 @@ import com.michal.mqtt.rest.MessageApi;
 import com.michal.mqtt.rest.ClientsApi;
 import com.michal.mqtt.rest.SensorDataApi;
 import com.michal.mqtt.rest.TopicsApi;
+import com.michal.mqtt.rest.converter.SensorDataModelConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -18,7 +19,7 @@ public class ApiConfigurtaion {
 
     @Bean
     @Scope("singleton")
-    public MqttApplication application(BrokerDao brokerRepo){
+    public MqttApplication application(BrokerDao brokerRepo) {
         return new MqttApplication(brokerRepo);
     }
 
@@ -28,8 +29,8 @@ public class ApiConfigurtaion {
     }
 
     @Bean
-    public SensorDataApi sensorDataApi(SensorDataDao sensorDataRepo) {
-        return new SensorDataApi(sensorDataRepo);
+    public SensorDataApi sensorDataApi(SensorDataDao sensorDataRepo, SensorDataModelConverter sensorDataModelConverter) {
+        return new SensorDataApi(sensorDataRepo, sensorDataModelConverter);
     }
 
     @Bean
@@ -43,7 +44,7 @@ public class ApiConfigurtaion {
     }
 
     @Bean
-    public ExceptionController exceptionController(){
+    public ExceptionController exceptionController() {
         return new ExceptionController();
     }
 

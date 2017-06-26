@@ -25,7 +25,7 @@ public class SensorDataCallback extends MqttCallbackAbstract{
 	
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken arg0) {
-		logger.info("Message published succesfull!!!");
+		logger.info("MessageModel published succesfull!!!");
 	}
 
 	/**

@@ -1,22 +1,29 @@
 package com.michal.mqtt.rest.model;
 
 import com.michal.mqtt.callback.CallbackEnum;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-public class BrokerData implements Serializable {
+@ApiModel(description = "Mqtt broker data")
+public class BrokerModel implements Serializable {
 
-    public BrokerData() {
+    public BrokerModel() {
     }
 
     @NotNull
+    @ApiModelProperty(value = "url", allowableValues = "tcp://localhost:1883", required = true)
     private String url;
     @NotNull
+    @ApiModelProperty(value = "user", allowableValues = "user", required = true)
     private String user;
     @NotNull
+    @ApiModelProperty(value = "password", allowableValues = "password", required = true)
     private String password;
     @NotNull
+    @ApiModelProperty(value = "callbackEnum", required = true)
     private CallbackEnum callbackEnum;
 
     public String getUrl() {

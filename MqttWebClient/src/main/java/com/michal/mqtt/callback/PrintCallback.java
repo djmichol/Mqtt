@@ -17,12 +17,12 @@ public class PrintCallback extends MqttCallbackAbstract {
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken arg0) {
-		logger.info("Message published succesfull!!!");
+		logger.info("MessageModel published succesfull!!!");
 	}
 
 	@Override
 	public void messageArrived(String arg0, MqttMessage message) throws Exception {
-		logger.info("Message arrived succesfull!!! {}", "topic: " + arg0 + "; message: " + new String(message.getPayload()));
+		logger.info("MessageModel arrived succesfull!!! {}", "topic: " + arg0 + "; message: " + new String(message.getPayload()));
 	}
 
 }

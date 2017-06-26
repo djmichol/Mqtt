@@ -2,6 +2,8 @@ package com.michal.mqtt.rest;
 
 import java.util.List;
 
+import com.michal.mqtt.rest.converter.SensorDataModelConverter;
+import com.michal.mqtt.rest.model.SensorDataModel;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +21,22 @@ public class SensorDataApi {
 
 	private SensorDataDao sensorDataRepo;
 
-	public SensorDataApi(SensorDataDao sensorDataRepo){
+	private SensorDataModelConverter sensorDataModelConverter;
+
+	public SensorDataApi(SensorDataDao sensorDataRepo, SensorDataModelConverter sensorDataModelConverter){
 		this.sensorDataRepo = sensorDataRepo;
+		this.sensorDataModelConverter = sensorDataModelConverter;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<SensorData>> getAllData() throws MqttException {
-		return new ResponseEntity<>(sensorDataRepo.getAllData(), HttpStatus.OK);
+	public ResponseEntity<List<SensorDataModel>> getAllData() throws MqttException {
+		List<SensorDataModel> response = sensorDataModelConverter.convert(sensorDataRepo.getAllData());
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{topic}")
-	public ResponseEntity<List<SensorData>> getAllTopicData(@PathVariable("topic") String topic) throws MqttException {
-		return new ResponseEntity<>(sensorDataRepo.getDataByType(topic), HttpStatus.OK);
+	public ResponseEntity<List<SensorDataModel>> getAllTopicData(@PathVariable("topic") String topic) throws MqttException {
+		List<SensorDataModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataByType(topic));
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}	
 }
