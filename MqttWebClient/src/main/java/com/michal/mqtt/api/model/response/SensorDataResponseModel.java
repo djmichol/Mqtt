@@ -1,4 +1,4 @@
-package com.michal.mqtt.rest.model;
+package com.michal.mqtt.api.model.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,19 +7,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 @ApiModel(description = "Sensor data")
-public class SensorDataModel implements Serializable {
+public class SensorDataResponseModel implements Serializable {
 
-    public SensorDataModel() {
+    public SensorDataResponseModel() {
     }
 
-    @ApiModelProperty(value = "place", allowableValues = "home")
+    @ApiModelProperty(value = "place")
     private String dataPlace;
-    @ApiModelProperty(value = "type", allowableValues = "temperature")
+    @ApiModelProperty(value = "type")
     private String dataType;
-    @ApiModelProperty(value = "room", allowableValues = "kitchen")
+    @ApiModelProperty(value = "room")
     private String dataRoom;
     @ApiModelProperty(value = "data")
     private String sensorData;
+    @ApiModelProperty(value = "topic")
+    private String topic;
     @ApiModelProperty(value = "timeStamp")
     private Date dataTimestamp;
 
@@ -61,5 +63,13 @@ public class SensorDataModel implements Serializable {
 
     public void setDataTimestamp(Date dataTimestamp) {
         this.dataTimestamp = dataTimestamp;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }

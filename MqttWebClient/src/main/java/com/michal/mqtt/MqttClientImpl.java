@@ -1,6 +1,5 @@
 package com.michal.mqtt;
 
-import java.beans.Transient;
 import java.io.Serializable;
 
 import com.michal.mqtt.callback.CallbackFactory;
@@ -10,11 +9,9 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import com.michal.dao.model.Broker;
-import com.michal.mqtt.callback.SensorDataCallback;
 
 public class MqttClientImpl implements Serializable {
 
@@ -22,8 +19,8 @@ public class MqttClientImpl implements Serializable {
 
     final Logger logger = LogManager.getLogger(MqttClientImpl.class);
 
-    private transient MqttClient client;
-    private transient MqttConnectOptions connectionOptions;
+    private MqttClient client;
+    private MqttConnectOptions connectionOptions;
     private Broker broker;
 
     public MqttClientImpl(Broker broker, String clientId) throws MqttException {
@@ -73,12 +70,9 @@ public class MqttClientImpl implements Serializable {
     public Broker getBroker() {
         return broker;
     }
-
     public boolean isConnected() {
         return client.isConnected();
     }
-
-    @Transient
     public MqttClient getClient() {
         return client;
     }

@@ -1,8 +1,10 @@
-package com.michal.mqtt.rest;
+package com.michal.mqtt.api;
 
 import java.util.List;
 
-import com.michal.mqtt.rest.model.BrokerModel;
+import com.michal.mqtt.api.converter.MqttClientToClientModelConverter;
+import com.michal.mqtt.api.model.request.BrokerRequestModel;
+import com.michal.mqtt.api.model.response.ClientResponseModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -29,20 +31,23 @@ public class ClientsApi {
 
     private MqttApplication mqttApplication;
     private BrokerDao brokerRepo;
+    private MqttClientToClientModelConverter mqttClientToClientModelConverter;
 
-    public ClientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo) {
+    public ClientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo, MqttClientToClientModelConverter mqttClientToClientModelConverter) {
         this.mqttApplication = mqttApplication;
         this.brokerRepo = brokerRepo;
+        this.mqttClientToClientModelConverter = mqttClientToClientModelConverter;
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<MqttClientImpl>> loadClients() throws MqttException {
-        return new ResponseEntity<>(mqttApplication.getBrokers(), HttpStatus.OK);
+    public ResponseEntity<List<ClientResponseModel>> loadClients() throws MqttException {
+        List<ClientResponseModel> clientResponseModels = mqttClientToClientModelConverter.convert(mqttApplication.getBrokers());
+        return new ResponseEntity<>(clientResponseModels, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> addNewBroker(@Valid @RequestBody BrokerModel brokerModel) throws MqttException {
-        Broker broker = brokerRepo.create(new Broker(brokerModel.getUrl(), brokerModel.getUser(), brokerModel.getPassword(), brokerModel.getCallbackEnum()));
+    public ResponseEntity<String> addNewBroker(@Valid @RequestBody BrokerRequestModel brokerRequestModel) throws MqttException {
+        Broker broker = brokerRepo.create(new Broker(brokerRequestModel.getUrl(), brokerRequestModel.getUser(), brokerRequestModel.getPassword(), brokerRequestModel.getCallbackEnum()));
         mqttApplication.getBrokers().add(new MqttClientImpl(broker, MqttApplication.CLIENT_ID));
         return new ResponseEntity<>("Broker added", HttpStatus.OK);
     }

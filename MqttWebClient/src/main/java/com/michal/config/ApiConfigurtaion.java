@@ -5,11 +5,12 @@ import com.michal.dao.SensorDataDao;
 import com.michal.dao.TopicDao;
 import com.michal.mqtt.MqttApplication;
 import com.michal.mqtt.error.ExceptionController;
-import com.michal.mqtt.rest.MessageApi;
-import com.michal.mqtt.rest.ClientsApi;
-import com.michal.mqtt.rest.SensorDataApi;
-import com.michal.mqtt.rest.TopicsApi;
-import com.michal.mqtt.rest.converter.SensorDataModelConverter;
+import com.michal.mqtt.api.MessageApi;
+import com.michal.mqtt.api.ClientsApi;
+import com.michal.mqtt.api.SensorDataApi;
+import com.michal.mqtt.api.TopicsApi;
+import com.michal.mqtt.api.converter.MqttClientToClientModelConverter;
+import com.michal.mqtt.api.converter.SensorDataModelConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -19,7 +20,7 @@ public class ApiConfigurtaion {
 
     @Bean
     @Scope("singleton")
-    public MqttApplication application(BrokerDao brokerRepo) {
+    public MqttApplication mqttApplication(BrokerDao brokerRepo) {
         return new MqttApplication(brokerRepo);
     }
 
@@ -29,8 +30,8 @@ public class ApiConfigurtaion {
     }
 
     @Bean
-    public SensorDataApi sensorDataApi(SensorDataDao sensorDataRepo, SensorDataModelConverter sensorDataModelConverter) {
-        return new SensorDataApi(sensorDataRepo, sensorDataModelConverter);
+    public SensorDataApi sensorDataApi(SensorDataDao sensorDataDao, SensorDataModelConverter sensorDataModelConverter) {
+        return new SensorDataApi(sensorDataDao, sensorDataModelConverter);
     }
 
     @Bean
@@ -39,8 +40,8 @@ public class ApiConfigurtaion {
     }
 
     @Bean
-    public ClientsApi clientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo) {
-        return new ClientsApi(mqttApplication, brokerRepo);
+    public ClientsApi clientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo, MqttClientToClientModelConverter mqttClientToClientModelConverter) {
+        return new ClientsApi(mqttApplication, brokerRepo, mqttClientToClientModelConverter);
     }
 
     @Bean

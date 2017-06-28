@@ -31,7 +31,6 @@ public class Topic implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "mqtt_broker_id", nullable = false)
-	@JsonIgnore
 	private Broker broker;
 	
 	@Transient

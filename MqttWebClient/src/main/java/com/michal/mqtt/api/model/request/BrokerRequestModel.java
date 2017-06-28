@@ -1,4 +1,4 @@
-package com.michal.mqtt.rest.model;
+package com.michal.mqtt.api.model.request;
 
 import com.michal.mqtt.callback.CallbackEnum;
 import io.swagger.annotations.ApiModel;
@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @ApiModel(description = "Mqtt broker data")
-public class BrokerModel implements Serializable {
+public class BrokerRequestModel implements Serializable {
 
-    public BrokerModel() {
+    public BrokerRequestModel() {
     }
 
     @NotNull

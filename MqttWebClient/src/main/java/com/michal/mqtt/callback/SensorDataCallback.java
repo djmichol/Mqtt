@@ -25,7 +25,7 @@ public class SensorDataCallback extends MqttCallbackAbstract{
 	
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken arg0) {
-		logger.info("MessageModel published succesfull!!!");
+		logger.info("MessageRequestModel published succesfull!!!");
 	}
 
 	/**
@@ -34,19 +34,20 @@ public class SensorDataCallback extends MqttCallbackAbstract{
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
 		String messagePayload = new String(message.getPayload());
-		String[] topicElements = topic.split("/");		
-		SensorData data = perpareData(messagePayload, topicElements);
+		SensorData data = perpareData(messagePayload, topic);
 		dataRepo.create(data);
 	}
 
 	private static final int PLACE=0;
 	private static final int ROOM=1;
 	private static final int TOPIC=2;
-	private SensorData perpareData(String messagePayload, String[] topicElements) {
+	private SensorData perpareData(String messagePayload, String topic) {
+		String[] topicElements = topic.split("/");
 		SensorData data = new SensorData();
 		data.setDataPlace(topicElements[PLACE]);
 		data.setDataRoom(topicElements[ROOM]);
 		data.setDataType(topicElements[TOPIC]);
+		data.setTopic(topic);
 		data.setDataTimestamp(new Date(System.currentTimeMillis()));
 		data.setSensorData(messagePayload);
 		return data;

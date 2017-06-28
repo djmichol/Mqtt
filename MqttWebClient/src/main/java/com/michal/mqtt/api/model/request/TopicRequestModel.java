@@ -1,4 +1,4 @@
-package com.michal.mqtt.rest.model;
+package com.michal.mqtt.api.model.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @ApiModel(description = "Topic in broker")
-public class TopicModel implements Serializable {
+public class TopicRequestModel implements Serializable {
 
-	public TopicModel(){}
+	public TopicRequestModel(){}
 
 	@NotNull
 	@ApiModelProperty(value = "broker id", required = true)
