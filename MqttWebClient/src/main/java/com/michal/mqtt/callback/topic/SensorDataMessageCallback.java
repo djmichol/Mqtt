@@ -21,14 +21,14 @@ public class SensorDataMessageCallback extends MessageListenerAbstract {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String messagePayload = new String(message.getPayload());
-        SensorData data = perpareData(messagePayload, topic);
+        SensorData data = prepareData(messagePayload, topic);
         dataRepo.create(data);
     }
 
     private static final int PLACE=0;
     private static final int ROOM=1;
     private static final int TOPIC=2;
-    private SensorData perpareData(String messagePayload, String topic) {
+    private SensorData prepareData(String messagePayload, String topic) {
         String[] topicElements = topic.split("/");
         SensorData data = new SensorData();
         data.setDataPlace(topicElements[PLACE]);

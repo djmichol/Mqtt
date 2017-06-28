@@ -45,7 +45,7 @@ public class MqttClientImpl implements Serializable {
     }
 
     public boolean subscribeTopic(String topic, MessageListenerAbstract messageListener) throws MqttException {
-        client.subscribe(topic, 0,messageListener);
+        client.subscribe(topic, 0, messageListener);
         logger.info("Subscribed topic '{}'", topic);
         return true;
     }
@@ -72,9 +72,11 @@ public class MqttClientImpl implements Serializable {
     public Broker getBroker() {
         return broker;
     }
+
     public boolean isConnected() {
         return client.isConnected();
     }
+
     public MqttClient getClient() {
         return client;
     }
