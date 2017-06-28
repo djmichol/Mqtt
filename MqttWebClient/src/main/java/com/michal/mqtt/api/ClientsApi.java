@@ -2,7 +2,8 @@ package com.michal.mqtt.api;
 
 import java.util.List;
 
-import com.michal.mqtt.api.converter.MqttClientToClientModelConverter;
+import com.michal.mqtt.api.converter.request.BrokerModelToBrokerConverter;
+import com.michal.mqtt.api.converter.response.MqttClientToClientModelConverter;
 import com.michal.mqtt.api.model.request.BrokerRequestModel;
 import com.michal.mqtt.api.model.response.ClientResponseModel;
 import org.apache.logging.log4j.LogManager;
@@ -32,11 +33,14 @@ public class ClientsApi {
     private MqttApplication mqttApplication;
     private BrokerDao brokerRepo;
     private MqttClientToClientModelConverter mqttClientToClientModelConverter;
+    private BrokerModelToBrokerConverter brokerModelToBrokerConverter;
 
-    public ClientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo, MqttClientToClientModelConverter mqttClientToClientModelConverter) {
+    public ClientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo, MqttClientToClientModelConverter mqttClientToClientModelConverter, BrokerModelToBrokerConverter
+            brokerModelToBrokerConverter) {
         this.mqttApplication = mqttApplication;
         this.brokerRepo = brokerRepo;
         this.mqttClientToClientModelConverter = mqttClientToClientModelConverter;
+        this.brokerModelToBrokerConverter = brokerModelToBrokerConverter;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -47,7 +51,7 @@ public class ClientsApi {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> addNewBroker(@Valid @RequestBody BrokerRequestModel brokerRequestModel) throws MqttException {
-        Broker broker = brokerRepo.create(new Broker(brokerRequestModel.getUrl(), brokerRequestModel.getUser(), brokerRequestModel.getPassword(), brokerRequestModel.getCallbackEnum()));
+        Broker broker = brokerRepo.create(brokerModelToBrokerConverter.convert(brokerRequestModel));
         mqttApplication.getBrokers().add(new MqttClientImpl(broker, MqttApplication.CLIENT_ID));
         return new ResponseEntity<>("Broker added", HttpStatus.OK);
     }

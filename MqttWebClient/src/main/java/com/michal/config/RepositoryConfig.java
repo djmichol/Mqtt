@@ -1,9 +1,11 @@
 package com.michal.config;
 
 import com.michal.dao.BrokerDao;
+import com.michal.dao.NotificationDao;
 import com.michal.dao.SensorDataDao;
 import com.michal.dao.TopicDao;
 import com.michal.dao.impl.BrokerDaoImpl;
+import com.michal.dao.impl.NotificationDaoImpl;
 import com.michal.dao.impl.SensorDataDaoImpl;
 import com.michal.dao.impl.TopicDaoImpl;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,11 @@ public class RepositoryConfig {
     @Bean
     public TopicDao topicDao() {
         return new TopicDaoImpl();
+    }
+
+    @Bean
+    public NotificationDao notificationDao() {
+        return new NotificationDaoImpl();
     }
 
 }

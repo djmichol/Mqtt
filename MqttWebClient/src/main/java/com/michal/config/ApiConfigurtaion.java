@@ -1,16 +1,20 @@
 package com.michal.config;
 
 import com.michal.dao.BrokerDao;
+import com.michal.dao.NotificationDao;
 import com.michal.dao.SensorDataDao;
 import com.michal.dao.TopicDao;
 import com.michal.mqtt.MqttApplication;
+import com.michal.mqtt.api.NotificationsApi;
+import com.michal.mqtt.api.converter.request.BrokerModelToBrokerConverter;
+import com.michal.mqtt.api.converter.response.NotificationToNotificationModelConverter;
 import com.michal.mqtt.error.ExceptionController;
 import com.michal.mqtt.api.MessageApi;
 import com.michal.mqtt.api.ClientsApi;
 import com.michal.mqtt.api.SensorDataApi;
 import com.michal.mqtt.api.TopicsApi;
-import com.michal.mqtt.api.converter.MqttClientToClientModelConverter;
-import com.michal.mqtt.api.converter.SensorDataModelConverter;
+import com.michal.mqtt.api.converter.response.MqttClientToClientModelConverter;
+import com.michal.mqtt.api.converter.response.SensorDataModelConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -40,8 +44,14 @@ public class ApiConfigurtaion {
     }
 
     @Bean
-    public ClientsApi clientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo, MqttClientToClientModelConverter mqttClientToClientModelConverter) {
-        return new ClientsApi(mqttApplication, brokerRepo, mqttClientToClientModelConverter);
+    public ClientsApi clientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo, MqttClientToClientModelConverter mqttClientToClientModelConverter,
+                                 BrokerModelToBrokerConverter brokerModelToBrokerConverter) {
+        return new ClientsApi(mqttApplication, brokerRepo, mqttClientToClientModelConverter, brokerModelToBrokerConverter);
+    }
+
+    @Bean
+    public NotificationsApi notificationsApi(NotificationDao notificationDao, NotificationToNotificationModelConverter notificationToNotificationModelConverter) {
+        return new NotificationsApi(notificationDao, notificationToNotificationModelConverter);
     }
 
     @Bean

@@ -1,6 +1,7 @@
-package com.michal.mqtt.api.converter;
+package com.michal.mqtt.api.converter.response;
 
 import com.michal.mqtt.MqttClientImpl;
+import com.michal.mqtt.api.converter.Converter;
 import com.michal.mqtt.api.model.response.ClientResponseModel;
 
 import java.util.stream.Collectors;

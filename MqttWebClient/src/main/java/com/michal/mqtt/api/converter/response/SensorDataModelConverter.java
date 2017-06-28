@@ -1,6 +1,7 @@
-package com.michal.mqtt.api.converter;
+package com.michal.mqtt.api.converter.response;
 
 import com.michal.dao.model.SensorData;
+import com.michal.mqtt.api.converter.Converter;
 import com.michal.mqtt.api.model.response.SensorDataResponseModel;
 
 public class SensorDataModelConverter extends Converter<SensorData,SensorDataResponseModel> {

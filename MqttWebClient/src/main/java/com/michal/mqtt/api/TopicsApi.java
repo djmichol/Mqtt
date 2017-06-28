@@ -65,7 +65,7 @@ public class TopicsApi {
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/subscribe")
     public ResponseEntity<String> subscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
-        if(changeTopicSubStatus(topicRequestModel)){
+        if (changeTopicSubStatus(topicRequestModel)) {
             return new ResponseEntity<>("Topic: " + topicRequestModel.getTopic() + " subscribed", HttpStatus.OK);
         }
         return new ResponseEntity<>("Cannot subscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -73,7 +73,7 @@ public class TopicsApi {
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/unsubscribe")
     public ResponseEntity<String> unsubscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
-        if(changeTopicSubStatus(topicRequestModel)){
+        if (changeTopicSubStatus(topicRequestModel)) {
             return new ResponseEntity<>("Topic: " + topicRequestModel.getTopic() + " unsubscribed", HttpStatus.OK);
         }
         return new ResponseEntity<>("Cannot unsubscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);

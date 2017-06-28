@@ -2,7 +2,7 @@ package com.michal.mqtt.api;
 
 import java.util.List;
 
-import com.michal.mqtt.api.converter.SensorDataModelConverter;
+import com.michal.mqtt.api.converter.response.SensorDataModelConverter;
 import com.michal.mqtt.api.model.response.SensorDataResponseModel;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.HttpStatus;
