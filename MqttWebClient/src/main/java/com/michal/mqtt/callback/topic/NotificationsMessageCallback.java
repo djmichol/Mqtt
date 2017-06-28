@@ -1,21 +1,18 @@
-package com.michal.mqtt.callback;
+package com.michal.mqtt.callback.topic;
 
 import com.michal.config.MqttApplicationConfiguration;
 import com.michal.dao.NotificationDao;
 import com.michal.dao.model.Notification;
-import com.michal.mqtt.MqttClientImpl;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.Date;
 
 
-public class NotificationsCallback extends MqttCallbackAbstract {
+public class NotificationsMessageCallback extends MessageListenerAbstract {
 
     private NotificationDao notificationDao;
 
-    public NotificationsCallback(MqttClientImpl client) {
-        super(client);
+    public NotificationsMessageCallback() {
         notificationDao = (NotificationDao) MqttApplicationConfiguration.getBean(NotificationDao.class);
     }
 
@@ -25,11 +22,7 @@ public class NotificationsCallback extends MqttCallbackAbstract {
         notification.setMessage(new String(message.getPayload()));
         notification.setTopic(topic);
         notification.setDataTimestamp(new Date(System.currentTimeMillis()));
+        notification.setRead(false);
         notificationDao.create(notification);
-    }
-
-    @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
-        logger.info("MessageRequestModel published succesfull!!!");
     }
 }

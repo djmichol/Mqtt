@@ -21,7 +21,6 @@ public class MqttClientToClientModelConverter extends Converter<MqttClientImpl, 
             clientResponseModel.setBrokerId(mqttClient.getBroker().getId());
             clientResponseModel.setBrokerUrl(mqttClient.getBroker().getUri());
             clientResponseModel.setBrokerUser(mqttClient.getBroker().getUser());
-            clientResponseModel.setBrokerCallback(mqttClient.getBroker().getCallbackEnum());
             clientResponseModel.setConnected(mqttClient.isConnected());
             if (mqttClient.getBroker().getTopics() != null) {
                 clientResponseModel.setTopics(topicToTopicModelConverter.convert(mqttClient.getBroker().getTopics().stream().collect(Collectors.toList())));

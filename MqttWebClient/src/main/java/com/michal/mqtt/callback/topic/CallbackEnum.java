@@ -1,4 +1,4 @@
-package com.michal.mqtt.callback;
+package com.michal.mqtt.callback.topic;
 
 public enum CallbackEnum {
 

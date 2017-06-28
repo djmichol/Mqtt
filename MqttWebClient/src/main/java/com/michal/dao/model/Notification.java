@@ -1,7 +1,5 @@
 package com.michal.dao.model;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,9 +25,8 @@ public class Notification {
     private String topic;
     @Column(name = "notification_timestamp", nullable = false)
     private Date dataTimestamp;
-    @Column(name = "read", nullable = false)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean read;
+    @Column(name = "notification_read", nullable = false)
+    private Boolean read;
 
     public Long getNotificationId() {
         return notificationId;
@@ -63,11 +60,11 @@ public class Notification {
         this.dataTimestamp = dataTimestamp;
     }
 
-    public boolean isRead() {
+    public Boolean getRead() {
         return read;
     }
 
-    public void setRead(boolean read) {
+    public void setRead(Boolean read) {
         this.read = read;
     }
 }

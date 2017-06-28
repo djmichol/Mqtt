@@ -1,7 +1,5 @@
 package com.michal.dao.model;
 
-import com.michal.mqtt.callback.CallbackEnum;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +7,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "mqttBrokers", uniqueConstraints = { @UniqueConstraint( columnNames = { "broker_uri", "broker_callback" } ) } )
+@Table(name = "mqttBrokers", uniqueConstraints = { @UniqueConstraint( columnNames = { "broker_uri" } ) } )
 public class Broker implements Serializable {
 
     private static final long serialVersionUID = -4177899607190590832L;
@@ -39,21 +35,16 @@ public class Broker implements Serializable {
     @Column(name = "broker_password", nullable = false)
     private String password;
 
-    @Column(name = "broker_callback", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CallbackEnum callbackEnum;
-
     @OneToMany(mappedBy = "broker", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Topic> topics = new HashSet<Topic>(0);
 
     public Broker() {
     }
 
-    public Broker(String uri, String user, String password, CallbackEnum callbackEnum) {
+    public Broker(String uri, String user, String password) {
         this.uri = uri;
         this.user = user;
         this.password = password;
-        this.callbackEnum = callbackEnum;
     }
 
     public String getUri() {
@@ -94,13 +85,5 @@ public class Broker implements Serializable {
 
     public void setTopics(Set<Topic> topics) {
         this.topics = topics;
-    }
-
-    public CallbackEnum getCallbackEnum() {
-        return callbackEnum;
-    }
-
-    public void setCallbackEnum(CallbackEnum callbackEnum) {
-        this.callbackEnum = callbackEnum;
     }
 }

@@ -10,7 +10,6 @@ public class BrokerModelToBrokerConverter extends Converter<BrokerRequestModel, 
     public Broker convert(BrokerRequestModel brokerRequestModel) {
         Broker broker = new Broker();
         if(brokerRequestModel!=null) {
-            broker.setCallbackEnum(brokerRequestModel.getCallbackEnum());
             broker.setPassword(brokerRequestModel.getPassword());
             broker.setUser(brokerRequestModel.getUser());
             broker.setUri(brokerRequestModel.getUrl());

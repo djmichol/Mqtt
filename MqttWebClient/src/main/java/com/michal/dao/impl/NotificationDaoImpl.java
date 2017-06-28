@@ -36,7 +36,7 @@ public class NotificationDaoImpl implements NotificationDao {
     @Transactional
     public List<Notification> getAllNewNotifications() {
         Query query = entityManager.createQuery("Select data from Notification data where data.read = :read", Notification.class);
-        query.setParameter("read", 0);
+        query.setParameter("read", false);
         return query.getResultList();
     }
 

@@ -2,7 +2,9 @@ package com.michal.mqtt;
 
 import java.io.Serializable;
 
-import com.michal.mqtt.callback.CallbackFactory;
+import com.michal.mqtt.callback.client.PrintCallback;
+import com.michal.mqtt.callback.topic.CallbackFactory;
+import com.michal.mqtt.callback.topic.MessageListenerAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -36,14 +38,14 @@ public class MqttClientImpl implements Serializable {
     public boolean connect() throws MqttException {
         logger.info("mqtt-client connecting to broker: " + client.getServerURI());
         client.connect(connectionOptions);
-        client.setCallback(CallbackFactory.createCallback(broker.getCallbackEnum(), this));
+        client.setCallback(new PrintCallback(this));
         logger.info("mqtt-client connected");
         return true;
 
     }
 
-    public boolean subscribeTopic(String topic) throws MqttException {
-        client.subscribe(topic, 0);
+    public boolean subscribeTopic(String topic, MessageListenerAbstract messageListener) throws MqttException {
+        client.subscribe(topic, 0,messageListener);
         logger.info("Subscribed topic '{}'", topic);
         return true;
     }

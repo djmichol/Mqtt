@@ -1,5 +1,7 @@
 package com.michal.mqtt.api;
 
+import com.michal.mqtt.api.model.request.TopicRequestModelWithCallback;
+import com.michal.mqtt.callback.topic.CallbackFactory;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +31,10 @@ public class TopicsApi {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "")
-    public ResponseEntity<String> addTopicToBroker(@Valid @RequestBody TopicRequestModel topicRequestModel) {
+    public ResponseEntity<String> addTopicToBroker(@Valid @RequestBody TopicRequestModelWithCallback topicRequestModel) {
         MqttClientImpl client = mqttApplication.getByBrokerId(topicRequestModel.getBrokerId());
         if (client != null) {
-            Topic topic = topicRepo.createTopic(new Topic(topicRequestModel.getTopic(), client.getBroker()));
+            Topic topic = topicRepo.createTopic(new Topic(topicRequestModel.getTopic(), client.getBroker(), topicRequestModel.getTopicCallback()));
             client.getBroker().getTopics().add(topic);
             return new ResponseEntity<>("Topic added", HttpStatus.OK);
         } else {
@@ -65,7 +67,7 @@ public class TopicsApi {
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/subscribe")
     public ResponseEntity<String> subscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
-        if (changeTopicSubStatus(topicRequestModel)) {
+        if (changeTopicSubStatus(topicRequestModel, true)) {
             return new ResponseEntity<>("Topic: " + topicRequestModel.getTopic() + " subscribed", HttpStatus.OK);
         }
         return new ResponseEntity<>("Cannot subscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -73,25 +75,25 @@ public class TopicsApi {
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/unsubscribe")
     public ResponseEntity<String> unsubscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
-        if (changeTopicSubStatus(topicRequestModel)) {
+        if (changeTopicSubStatus(topicRequestModel, false)) {
             return new ResponseEntity<>("Topic: " + topicRequestModel.getTopic() + " unsubscribed", HttpStatus.OK);
         }
         return new ResponseEntity<>("Cannot unsubscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private boolean changeTopicSubStatus(TopicRequestModel topicRequestModel) throws MqttException {
+    private boolean changeTopicSubStatus(TopicRequestModel topicRequestModel, boolean subscribe) throws MqttException {
         Topic topic = topicRepo.getTopicByNameAndBorkerId(topicRequestModel.getTopic(), topicRequestModel.getBrokerId());
         MqttClientImpl client = mqttApplication.getByBrokerId(topicRequestModel.getBrokerId());
         if (client != null) {
             for (Topic clientTopic : client.getBroker().getTopics()) {
                 if (clientTopic.getTopicId().equals(topic.getTopicId())) {
-                    if (clientTopic.isSubscribed()) {
+                    if (clientTopic.isSubscribed() && !subscribe) {
                         if (client.unsubscribeTopic(clientTopic.getTopic())) {
                             clientTopic.setSubscribed(false);
                             return true;
                         }
-                    } else {
-                        if (client.subscribeTopic(clientTopic.getTopic())) {
+                    } else if(subscribe && !clientTopic.isSubscribed()){
+                        if (client.subscribeTopic(clientTopic.getTopic(), CallbackFactory.createCallback(topic.getCallbackEnum()))) {
                             clientTopic.setSubscribed(true);
                             return true;
                         }

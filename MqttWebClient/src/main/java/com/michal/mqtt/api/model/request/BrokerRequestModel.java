@@ -1,6 +1,6 @@
 package com.michal.mqtt.api.model.request;
 
-import com.michal.mqtt.callback.CallbackEnum;
+import com.michal.mqtt.callback.topic.CallbackEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -22,9 +22,6 @@ public class BrokerRequestModel implements Serializable {
     @NotNull
     @ApiModelProperty(value = "password", allowableValues = "password", required = true)
     private String password;
-    @NotNull
-    @ApiModelProperty(value = "callbackEnum", required = true)
-    private CallbackEnum callbackEnum;
 
     public String getUrl() {
         return url;
@@ -48,13 +45,5 @@ public class BrokerRequestModel implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public CallbackEnum getCallbackEnum() {
-        return callbackEnum;
-    }
-
-    public void setCallbackEnum(CallbackEnum callbackEnum) {
-        this.callbackEnum = callbackEnum;
     }
 }

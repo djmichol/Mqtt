@@ -1,5 +1,6 @@
 package com.michal.mqtt.api.model.response;
 
+import com.michal.mqtt.callback.topic.CallbackEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,6 +14,8 @@ public class TopicResponseModel {
     private String topic;
     @ApiModelProperty(value = "subscribed")
     private boolean subscribed;
+    @ApiModelProperty(value = "topicCallback")
+    private CallbackEnum topicCallback;
 
 
     public Long getBrokerId() {
@@ -34,5 +37,13 @@ public class TopicResponseModel {
 
     public void setSubscribed(boolean subscribed) {
         this.subscribed = subscribed;
+    }
+
+    public CallbackEnum getTopicCallback() {
+        return topicCallback;
+    }
+
+    public void setTopicCallback(CallbackEnum topicCallback) {
+        this.topicCallback = topicCallback;
     }
 }

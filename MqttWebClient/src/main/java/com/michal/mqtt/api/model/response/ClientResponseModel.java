@@ -1,6 +1,6 @@
 package com.michal.mqtt.api.model.response;
 
-import com.michal.mqtt.callback.CallbackEnum;
+import com.michal.mqtt.callback.topic.CallbackEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -21,9 +21,6 @@ public class ClientResponseModel implements Serializable{
 
     @ApiModelProperty(value = "brokerUser")
     private String brokerUser;
-
-    @ApiModelProperty(value = "brokerCallback")
-    private CallbackEnum brokerCallback;
 
     @ApiModelProperty(value = "topics")
     private List<TopicResponseModel> topics;
@@ -53,14 +50,6 @@ public class ClientResponseModel implements Serializable{
 
     public void setBrokerUser(String brokerUser) {
         this.brokerUser = brokerUser;
-    }
-
-    public CallbackEnum getBrokerCallback() {
-        return brokerCallback;
-    }
-
-    public void setBrokerCallback(CallbackEnum brokerCallback) {
-        this.brokerCallback = brokerCallback;
     }
 
     public List<TopicResponseModel> getTopics() {

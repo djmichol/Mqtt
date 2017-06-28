@@ -13,6 +13,7 @@ public class TopicToTopicModelConverter extends Converter<Topic, TopicResponseMo
             topicResponse.setBrokerId(topic.getBroker().getId());
             topicResponse.setSubscribed(topic.isSubscribed());
             topicResponse.setTopic(topic.getTopic());
+            topicResponse.setTopicCallback(topic.getCallbackEnum());
         }
         return topicResponse;
     }
