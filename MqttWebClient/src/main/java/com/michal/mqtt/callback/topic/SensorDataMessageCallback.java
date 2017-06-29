@@ -3,6 +3,8 @@ package com.michal.mqtt.callback.topic;
 import com.michal.config.MqttApplicationConfiguration;
 import com.michal.dao.SensorDataDao;
 import com.michal.dao.model.SensorData;
+import com.michal.mqtt.callback.sensorDataAlert.DataValidator;
+import com.michal.mqtt.callback.sensorDataAlert.DataValidatorFactory;
 import com.michal.mqtt.callback.sensorDataAlert.TemperatureValidator;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -11,10 +13,11 @@ import java.util.Date;
 public class SensorDataMessageCallback extends MessageListenerAbstract {
 
     private SensorDataDao dataRepo;
+    private DataValidatorFactory dataValidatorFactory;
 
-    public SensorDataMessageCallback(SensorDataDao dataRepo, TemperatureValidator dataValidator) {
+    public SensorDataMessageCallback(SensorDataDao dataRepo, DataValidatorFactory dataValidatorFactory) {
         this.dataRepo = dataRepo;
-        this.dataValidator = dataValidator;
+        this.dataValidatorFactory = dataValidatorFactory;
     }
 
     /**
@@ -25,7 +28,7 @@ public class SensorDataMessageCallback extends MessageListenerAbstract {
         String messagePayload = new String(message.getPayload());
         SensorData data = prepareData(messagePayload, topic);
         dataRepo.create(data);
-        dataValidator.validate(topic,messagePayload);
+        dataValidatorFactory.createCallback(topic.split("/")[TOPIC]).validate(topic,messagePayload);
     }
 
     private static final int PLACE=0;

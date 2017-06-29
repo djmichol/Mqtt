@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class TemperatureValidator extends DataValidator {
 
     public TemperatureValidator(NotificationDao notificationDao) {
-        super(notificationDao, null);
+        super(notificationDao);
     }
 
     @Override

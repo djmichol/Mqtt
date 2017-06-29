@@ -2,6 +2,7 @@ package com.michal.config;
 
 import com.michal.dao.NotificationDao;
 import com.michal.dao.SensorDataDao;
+import com.michal.mqtt.callback.sensorDataAlert.DataValidatorFactory;
 import com.michal.mqtt.callback.sensorDataAlert.TemperatureValidator;
 import com.michal.mqtt.callback.topic.CallbackFactory;
 import com.michal.mqtt.callback.topic.NotificationsMessageCallback;
@@ -14,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 public class CallbackConfiguration {
 
     @Bean
-    public SensorDataMessageCallback sensorDataMessageCallback(SensorDataDao sensorDataDao, TemperatureValidator temperatureValidator) {
-        return new SensorDataMessageCallback(sensorDataDao, temperatureValidator);
+    public SensorDataMessageCallback sensorDataMessageCallback(SensorDataDao sensorDataDao, DataValidatorFactory dataValidatorFactory) {
+        return new SensorDataMessageCallback(sensorDataDao, dataValidatorFactory);
     }
 
     @Bean
