@@ -15,7 +15,7 @@ import com.michal.mqtt.MqttClientImpl;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/messages")
 public class MessageApi {
 
     private MqttApplication mqttApplication;

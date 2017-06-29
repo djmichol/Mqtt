@@ -19,7 +19,7 @@ import com.michal.mqtt.api.model.request.TopicRequestModel;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/client/topic")
+@RequestMapping("/topics")
 public class TopicsApi {
 
     private TopicDao topicRepo;

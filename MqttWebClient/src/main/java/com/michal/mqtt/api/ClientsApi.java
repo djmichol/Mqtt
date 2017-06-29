@@ -25,7 +25,7 @@ import com.michal.mqtt.MqttClientImpl;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/clients")
 public class ClientsApi {
 
     final static Logger logger = LogManager.getLogger(ClientsApi.class);

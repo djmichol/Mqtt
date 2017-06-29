@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.michal.dao.SensorDataDao;
 
 @RestController
-@RequestMapping("/sensorData")
+@RequestMapping("/sensorsData")
 public class SensorDataApi {
 
 	private SensorDataDao sensorDataRepo;
