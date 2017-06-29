@@ -12,8 +12,8 @@ public class NotificationsMessageCallback extends MessageListenerAbstract {
 
     private NotificationDao notificationDao;
 
-    public NotificationsMessageCallback() {
-        notificationDao = (NotificationDao) MqttApplicationConfiguration.getBean(NotificationDao.class);
+    public NotificationsMessageCallback(NotificationDao notificationDao) {
+        this.notificationDao = notificationDao;
     }
 
     @Override

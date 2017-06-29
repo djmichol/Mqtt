@@ -24,10 +24,12 @@ public class TopicsApi {
 
     private TopicDao topicRepo;
     private MqttApplication mqttApplication;
+    private CallbackFactory callbackFactory;
 
-    public TopicsApi(TopicDao topicRepo, MqttApplication mqttApplication) {
+    public TopicsApi(TopicDao topicRepo, MqttApplication mqttApplication, CallbackFactory callbackFactory) {
         this.topicRepo = topicRepo;
         this.mqttApplication = mqttApplication;
+        this.callbackFactory = callbackFactory;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "")
@@ -93,7 +95,7 @@ public class TopicsApi {
                             return true;
                         }
                     } else if(subscribe && !clientTopic.isSubscribed()){
-                        if (client.subscribeTopic(clientTopic.getTopic(), CallbackFactory.createCallback(topic.getCallbackEnum()))) {
+                        if (client.subscribeTopic(clientTopic.getTopic(), callbackFactory.createCallback(topic.getCallbackEnum()))) {
                             clientTopic.setSubscribed(true);
                             return true;
                         }

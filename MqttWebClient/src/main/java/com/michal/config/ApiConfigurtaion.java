@@ -8,6 +8,7 @@ import com.michal.mqtt.MqttApplication;
 import com.michal.mqtt.api.NotificationsApi;
 import com.michal.mqtt.api.converter.request.BrokerModelToBrokerConverter;
 import com.michal.mqtt.api.converter.response.NotificationToNotificationModelConverter;
+import com.michal.mqtt.callback.topic.CallbackFactory;
 import com.michal.mqtt.error.ExceptionController;
 import com.michal.mqtt.api.MessageApi;
 import com.michal.mqtt.api.ClientsApi;
@@ -39,8 +40,8 @@ public class ApiConfigurtaion {
     }
 
     @Bean
-    public TopicsApi topicsApi(TopicDao topicRepo, MqttApplication mqttApplication) {
-        return new TopicsApi(topicRepo, mqttApplication);
+    public TopicsApi topicsApi(TopicDao topicRepo, MqttApplication mqttApplication, CallbackFactory callbackFactory) {
+        return new TopicsApi(topicRepo, mqttApplication, callbackFactory);
     }
 
     @Bean
