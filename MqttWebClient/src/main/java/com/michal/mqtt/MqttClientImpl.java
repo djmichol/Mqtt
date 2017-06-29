@@ -3,7 +3,6 @@ package com.michal.mqtt;
 import java.io.Serializable;
 
 import com.michal.mqtt.callback.client.PrintCallback;
-import com.michal.mqtt.callback.topic.CallbackFactory;
 import com.michal.mqtt.callback.topic.MessageListenerAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
