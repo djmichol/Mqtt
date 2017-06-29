@@ -3,7 +3,6 @@ package com.michal.config;
 import com.michal.dao.NotificationDao;
 import com.michal.dao.SensorDataDao;
 import com.michal.mqtt.callback.sensorDataAlert.DataValidatorFactory;
-import com.michal.mqtt.callback.sensorDataAlert.TemperatureValidator;
 import com.michal.mqtt.callback.topic.CallbackFactory;
 import com.michal.mqtt.callback.topic.NotificationsMessageCallback;
 import com.michal.mqtt.callback.topic.PrintMessageCallback;

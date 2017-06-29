@@ -3,9 +3,9 @@ package com.michal.mqtt;
 import java.io.Serializable;
 
 import com.michal.mqtt.callback.client.PrintCallback;
-import com.michal.mqtt.callback.topic.MessageListenerAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -43,7 +43,7 @@ public class MqttClientImpl implements Serializable {
 
     }
 
-    public boolean subscribeTopic(String topic, MessageListenerAbstract messageListener) throws MqttException {
+    public boolean subscribeTopic(String topic, IMqttMessageListener messageListener) throws MqttException {
         client.subscribe(topic, 0, messageListener);
         logger.info("Subscribed topic '{}'", topic);
         return true;

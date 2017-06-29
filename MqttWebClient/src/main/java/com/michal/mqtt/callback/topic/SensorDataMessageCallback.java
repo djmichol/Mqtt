@@ -1,16 +1,14 @@
 package com.michal.mqtt.callback.topic;
 
-import com.michal.config.MqttApplicationConfiguration;
 import com.michal.dao.SensorDataDao;
 import com.michal.dao.model.SensorData;
-import com.michal.mqtt.callback.sensorDataAlert.DataValidator;
 import com.michal.mqtt.callback.sensorDataAlert.DataValidatorFactory;
-import com.michal.mqtt.callback.sensorDataAlert.TemperatureValidator;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.Date;
 
-public class SensorDataMessageCallback extends MessageListenerAbstract {
+public class SensorDataMessageCallback implements IMqttMessageListener {
 
     private SensorDataDao dataRepo;
     private DataValidatorFactory dataValidatorFactory;

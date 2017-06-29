@@ -1,14 +1,14 @@
 package com.michal.mqtt.callback.topic;
 
-import com.michal.config.MqttApplicationConfiguration;
 import com.michal.dao.NotificationDao;
 import com.michal.dao.model.Notification;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.Date;
 
 
-public class NotificationsMessageCallback extends MessageListenerAbstract {
+public class NotificationsMessageCallback implements IMqttMessageListener {
 
     private NotificationDao notificationDao;
 

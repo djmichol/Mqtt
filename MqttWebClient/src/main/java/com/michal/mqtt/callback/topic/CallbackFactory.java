@@ -1,5 +1,7 @@
 package com.michal.mqtt.callback.topic;
 
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+
 public class CallbackFactory {
 
     public CallbackFactory(PrintMessageCallback printMessageCallback, SensorDataMessageCallback sensorDataMessageCallback, NotificationsMessageCallback notificationsMessageCallback){
@@ -12,7 +14,7 @@ public class CallbackFactory {
     private SensorDataMessageCallback sensorDataMessageCallback;
     private NotificationsMessageCallback notificationsMessageCallback;
 
-    public MessageListenerAbstract createCallback(CallbackEnum callback) {
+    public IMqttMessageListener createCallback(CallbackEnum callback) {
         switch (callback) {
             case PRINT_CALLBACK:
                 return printMessageCallback;
