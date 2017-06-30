@@ -67,7 +67,7 @@ public class ClientsApi {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/connect/{brokerId}")
+    @RequestMapping(method = RequestMethod.POST, value = "/connect/{brokerId}")
     public ResponseEntity<String> connectToBroker(@PathVariable("brokerId") Long brokerId) throws MqttException {
         if (mqttApplication.getByBrokerId(brokerId).connect()) {
             return new ResponseEntity<>("Client connected", HttpStatus.OK);
@@ -75,7 +75,7 @@ public class ClientsApi {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/disconnect/{brokerId}")
+    @RequestMapping(method = RequestMethod.POST, value = "/disconnect/{brokerId}")
     public ResponseEntity<String> disconnectToBroker(@PathVariable("brokerId") Long brokerId) throws MqttException {
         if (mqttApplication.getByBrokerId(brokerId).disconnect()) {
             return new ResponseEntity<>("Client disconnected", HttpStatus.OK);

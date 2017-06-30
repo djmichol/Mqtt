@@ -5,7 +5,6 @@ import java.util.List;
 
 public class ErrorBuilder {
 
-    private int status;
     private String message;
     private List<String> errors = new ArrayList<>();
 
@@ -17,18 +16,13 @@ public class ErrorBuilder {
         return this;
     }
 
-    public ErrorBuilder status(int status) {
-        this.status = status;
-        return this;
-    }
-
     public ErrorBuilder error(String error) {
         errors.add(error);
         return this;
     }
 
     public ErrorData build(){
-        return new ErrorData(status, message, errors);
+        return new ErrorData(message, errors);
     }
 
 }

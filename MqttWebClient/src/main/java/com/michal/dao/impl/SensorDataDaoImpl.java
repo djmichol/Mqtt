@@ -24,19 +24,26 @@ public class SensorDataDaoImpl implements SensorDataDao {
 		return data;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public List<SensorData> getAllData() {
 		return entityManager.createQuery("from SensorData").getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public List<SensorData> getDataByType(String type) {
 		Query query = entityManager.createQuery("Select data from SensorData data where data.dataType = :type", SensorData.class);
 		query.setParameter("type", type);
+		return query.getResultList();
+	}
+
+	@Override
+	@Transactional
+	public List<SensorData> getDataForRoomByType(String room, String type) {
+		Query query = entityManager.createQuery("Select data from SensorData data where data.dataType = :type and data.dataRoom=:dataRoom", SensorData.class);
+		query.setParameter("type", type);
+		query.setParameter("dataRoom", room);
 		return query.getResultList();
 	}
 }

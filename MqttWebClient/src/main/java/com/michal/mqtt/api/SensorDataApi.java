@@ -37,5 +37,11 @@ public class SensorDataApi {
 	public ResponseEntity<List<SensorDataResponseModel>> getAllTopicData(@PathVariable("topic") String topic) throws MqttException {
 		List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataByType(topic));
 		return new ResponseEntity<>(response, HttpStatus.OK);
-	}	
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{room}/{type}")
+	public ResponseEntity<List<SensorDataResponseModel>> getAllTopicData(@PathVariable("room") String room,@PathVariable("type") String type) throws MqttException {
+		List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataForRoomByType(room,type));
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 }

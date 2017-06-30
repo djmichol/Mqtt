@@ -5,6 +5,7 @@ import com.michal.mqtt.api.converter.response.NotificationToNotificationModelCon
 import com.michal.mqtt.api.model.response.NotificationResponseModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
