@@ -1,6 +1,7 @@
 package com.michal.mqtt.api;
 
 import com.michal.mqtt.api.model.request.MessageRequestModel;
+import com.michal.mqtt.api.model.response.SimpleResponse;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,10 @@ public class MessageApi {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/publish")
-    public ResponseEntity<String> publishMessage(@Valid @RequestBody MessageRequestModel messageRequestModel) throws MqttException {
+    public ResponseEntity<SimpleResponse> publishMessage(@Valid @RequestBody MessageRequestModel messageRequestModel) throws MqttException {
         MqttClientImpl client = mqttApplication.getByBrokerId(messageRequestModel.getBrokerId());
         client.publish(messageRequestModel.getTopic(), messageRequestModel.getMessage(), 0);
-        return new ResponseEntity<>("MessageRequestModel to topic: " + messageRequestModel.getTopic() + " published", HttpStatus.OK);
+        return new ResponseEntity<>(SimpleResponse.create("MessageRequestModel to topic: " + messageRequestModel.getTopic() + " published"), HttpStatus.OK);
     }
 
 }

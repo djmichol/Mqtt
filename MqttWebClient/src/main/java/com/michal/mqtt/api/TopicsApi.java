@@ -1,6 +1,7 @@
 package com.michal.mqtt.api;
 
 import com.michal.mqtt.api.model.request.TopicRequestModelWithCallback;
+import com.michal.mqtt.api.model.response.SimpleResponse;
 import com.michal.mqtt.callback.topic.CallbackFactory;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.HttpStatus;
@@ -33,19 +34,19 @@ public class TopicsApi {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "")
-    public ResponseEntity<String> addTopicToBroker(@Valid @RequestBody TopicRequestModelWithCallback topicRequestModel) {
+    public ResponseEntity<SimpleResponse> addTopicToBroker(@Valid @RequestBody TopicRequestModelWithCallback topicRequestModel) {
         MqttClientImpl client = mqttApplication.getByBrokerId(topicRequestModel.getBrokerId());
         if (client != null) {
             Topic topic = topicRepo.createTopic(new Topic(topicRequestModel.getTopic(), client.getBroker(), topicRequestModel.getTopicCallback()));
             client.getBroker().getTopics().add(topic);
-            return new ResponseEntity<>("Topic added", HttpStatus.OK);
+            return new ResponseEntity<>(SimpleResponse.create("Topic added"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("No MQTT client found", HttpStatus.PRECONDITION_FAILED);
+            return new ResponseEntity<>(SimpleResponse.create("No MQTT client found"), HttpStatus.PRECONDITION_FAILED);
         }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "")
-    public ResponseEntity<String> removeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) {
+    public ResponseEntity<SimpleResponse> removeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) {
         MqttClientImpl client = mqttApplication.getByBrokerId(topicRequestModel.getBrokerId());
         Topic topicToRemove = topicRepo.getTopicByNameAndBorkerId(topicRequestModel.getTopic(), topicRequestModel.getBrokerId());
         if (client != null) {
@@ -59,28 +60,28 @@ public class TopicsApi {
                 if (toRemove != null) {
                     client.getBroker().getTopics().remove(toRemove);
                 }
-                return new ResponseEntity<String>(HttpStatus.OK);
+                return new ResponseEntity<>(SimpleResponse.create("Topic removed"),HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Cannot find topic to remove", HttpStatus.PRECONDITION_FAILED);
+                return new ResponseEntity<>(SimpleResponse.create("Cannot find topic to remove"), HttpStatus.PRECONDITION_FAILED);
             }
         }
-        return new ResponseEntity<>("No MQTT client found", HttpStatus.PRECONDITION_FAILED);
+        return new ResponseEntity<>(SimpleResponse.create("No MQTT client found"), HttpStatus.PRECONDITION_FAILED);
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/subscribe")
-    public ResponseEntity<String> subscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
+    public ResponseEntity<SimpleResponse> subscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
         if (changeTopicSubStatus(topicRequestModel, true)) {
-            return new ResponseEntity<>("Topic: " + topicRequestModel.getTopic() + " subscribed", HttpStatus.OK);
+            return new ResponseEntity<>(SimpleResponse.create("Topic: " + topicRequestModel.getTopic() + " subscribed"), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Cannot subscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(SimpleResponse.create("Cannot subscribe topic"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/unsubscribe")
-    public ResponseEntity<String> unsubscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
+    public ResponseEntity<SimpleResponse> unsubscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
         if (changeTopicSubStatus(topicRequestModel, false)) {
-            return new ResponseEntity<>("Topic: " + topicRequestModel.getTopic() + " unsubscribed", HttpStatus.OK);
+            return new ResponseEntity<>(SimpleResponse.create("Topic: " + topicRequestModel.getTopic() + " unsubscribed"), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Cannot unsubscribe topic", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(SimpleResponse.create("Cannot unsubscribe topic"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private boolean changeTopicSubStatus(TopicRequestModel topicRequestModel, boolean subscribe) throws MqttException {

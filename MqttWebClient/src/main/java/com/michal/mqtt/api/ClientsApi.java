@@ -6,6 +6,7 @@ import com.michal.mqtt.api.converter.request.BrokerModelToBrokerConverter;
 import com.michal.mqtt.api.converter.response.MqttClientToClientModelConverter;
 import com.michal.mqtt.api.model.request.BrokerRequestModel;
 import com.michal.mqtt.api.model.response.ClientResponseModel;
+import com.michal.mqtt.api.model.response.SimpleResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -50,35 +51,35 @@ public class ClientsApi {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> addNewBroker(@Valid @RequestBody BrokerRequestModel brokerRequestModel) throws MqttException {
+    public ResponseEntity<SimpleResponse> addNewBroker(@Valid @RequestBody BrokerRequestModel brokerRequestModel) throws MqttException {
         Broker broker = brokerRepo.create(brokerModelToBrokerConverter.convert(brokerRequestModel));
         mqttApplication.getBrokers().add(new MqttClientImpl(broker, MqttApplication.CLIENT_ID));
-        return new ResponseEntity<>("Broker added", HttpStatus.OK);
+        return new ResponseEntity<>(SimpleResponse.create("Broker added"), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{brokerId}")
-    public ResponseEntity<String> removeBroker(@PathVariable("brokerId") Long brokerId) {
+    public ResponseEntity<SimpleResponse> removeBroker(@PathVariable("brokerId") Long brokerId) {
         if (brokerRepo.removeBroker(brokerId)) {
             MqttClientImpl client = mqttApplication.getByBrokerId(brokerId);
             mqttApplication.getBrokers().remove(client);
-            return new ResponseEntity<>("Broker removed", HttpStatus.OK);
+            return new ResponseEntity<>(SimpleResponse.create("Broker removed"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Cannot find broker to remove", HttpStatus.PRECONDITION_FAILED);
+            return new ResponseEntity<>(SimpleResponse.create("Cannot find broker to remove"), HttpStatus.PRECONDITION_FAILED);
         }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/connect/{brokerId}")
-    public ResponseEntity<String> connectToBroker(@PathVariable("brokerId") Long brokerId) throws MqttException {
+    public ResponseEntity<SimpleResponse> connectToBroker(@PathVariable("brokerId") Long brokerId) throws MqttException {
         if (mqttApplication.getByBrokerId(brokerId).connect()) {
-            return new ResponseEntity<>("Client connected", HttpStatus.OK);
+            return new ResponseEntity<>(SimpleResponse.create("Client connected"), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/disconnect/{brokerId}")
-    public ResponseEntity<String> disconnectToBroker(@PathVariable("brokerId") Long brokerId) throws MqttException {
+    public ResponseEntity<SimpleResponse> disconnectToBroker(@PathVariable("brokerId") Long brokerId) throws MqttException {
         if (mqttApplication.getByBrokerId(brokerId).disconnect()) {
-            return new ResponseEntity<>("Client disconnected", HttpStatus.OK);
+            return new ResponseEntity<>(SimpleResponse.create("Client disconnected"), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
