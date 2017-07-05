@@ -68,7 +68,7 @@ public class TopicsApi {
         return new ResponseEntity<>(SimpleResponse.create("No MQTT client found"), HttpStatus.PRECONDITION_FAILED);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/subscribe")
+    @RequestMapping(method = RequestMethod.POST, value = "/subscribe")
     public ResponseEntity<SimpleResponse> subscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
         if (changeTopicSubStatus(topicRequestModel, true)) {
             return new ResponseEntity<>(SimpleResponse.create("Topic: " + topicRequestModel.getTopic() + " subscribed"), HttpStatus.OK);
@@ -76,7 +76,7 @@ public class TopicsApi {
         return new ResponseEntity<>(SimpleResponse.create("Cannot subscribe topic"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/unsubscribe")
+    @RequestMapping(method = RequestMethod.POST, value = "/unsubscribe")
     public ResponseEntity<SimpleResponse> unsubscribeTopic(@Valid @RequestBody TopicRequestModel topicRequestModel) throws MqttException {
         if (changeTopicSubStatus(topicRequestModel, false)) {
             return new ResponseEntity<>(SimpleResponse.create("Topic: " + topicRequestModel.getTopic() + " unsubscribed"), HttpStatus.OK);

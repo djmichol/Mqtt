@@ -31,7 +31,7 @@ public class NotificationsApi {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH)
+    @RequestMapping(method = RequestMethod.POST)
     public void readNotifications(@RequestBody List<Long> notificationIds){
         notificationIds.forEach(notificationId -> notificationDao.readNotification(notificationId));
     }
