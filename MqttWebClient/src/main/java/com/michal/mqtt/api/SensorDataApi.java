@@ -18,30 +18,36 @@ import com.michal.dao.SensorDataDao;
 @RequestMapping("/sensorsData")
 public class SensorDataApi {
 
-	private SensorDataDao sensorDataRepo;
+    private SensorDataDao sensorDataRepo;
 
-	private SensorDataModelConverter sensorDataModelConverter;
+    private SensorDataModelConverter sensorDataModelConverter;
 
-	public SensorDataApi(SensorDataDao sensorDataRepo, SensorDataModelConverter sensorDataModelConverter){
-		this.sensorDataRepo = sensorDataRepo;
-		this.sensorDataModelConverter = sensorDataModelConverter;
-	}
+    public SensorDataApi(SensorDataDao sensorDataRepo, SensorDataModelConverter sensorDataModelConverter) {
+        this.sensorDataRepo = sensorDataRepo;
+        this.sensorDataModelConverter = sensorDataModelConverter;
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<SensorDataResponseModel>> getAllData() throws MqttException {
-		List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getAllData());
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/{topic}")
-	public ResponseEntity<List<SensorDataResponseModel>> getAllTopicData(@PathVariable("topic") String topic) throws MqttException {
-		List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataByType(topic));
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<SensorDataResponseModel>> getAllData() throws MqttException {
+        List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getAllData());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{room}/{type}")
-	public ResponseEntity<List<SensorDataResponseModel>> getAllTopicData(@PathVariable("room") String room,@PathVariable("type") String type) throws MqttException {
-		List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataForRoomByType(room,type));
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.GET, value = "/{topic}")
+    public ResponseEntity<List<SensorDataResponseModel>> getAllTopicData(@PathVariable("topic") String topic) throws MqttException {
+        List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataByType(topic));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{room}/{type}")
+    public ResponseEntity<List<SensorDataResponseModel>> getAllTopicData(@PathVariable(value = "room") String room, @PathVariable(value = "type") String type) throws MqttException {
+        List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataForRoomByType(room, type));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/dataType={type}")
+    public ResponseEntity<List<SensorDataResponseModel>> getAllTopicDataByType(@PathVariable(value = "type") String type) throws MqttException {
+        List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataForRoomByType(null, type));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

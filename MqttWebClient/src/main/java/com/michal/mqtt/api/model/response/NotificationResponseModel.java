@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @ApiModel(description = "Notification response model")
@@ -35,8 +36,9 @@ public class NotificationResponseModel implements Serializable{
         this.topic = topic;
     }
 
-    public Date getDataTimestamp() {
-        return dataTimestamp;
+    public String getDataTimestamp() {
+        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        return dt1.format(dataTimestamp);
     }
 
     public void setDataTimestamp(Date dataTimestamp) {
