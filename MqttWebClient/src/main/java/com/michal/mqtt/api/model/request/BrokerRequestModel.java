@@ -3,6 +3,7 @@ package com.michal.mqtt.api.model.request;
 import com.michal.mqtt.callback.topic.CallbackEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -13,13 +14,13 @@ public class BrokerRequestModel implements Serializable {
     public BrokerRequestModel() {
     }
 
-    @NotNull
+    @NotEmpty(message = "URL can't be empty!")
     @ApiModelProperty(value = "url", allowableValues = "tcp://localhost:1883", required = true)
     private String url;
-    @NotNull
+    @NotEmpty(message = "User can't be empty!")
     @ApiModelProperty(value = "user", allowableValues = "user", required = true)
     private String user;
-    @NotNull
+    @NotEmpty(message = "Password can't be empty!")
     @ApiModelProperty(value = "password", allowableValues = "password", required = true)
     private String password;
 

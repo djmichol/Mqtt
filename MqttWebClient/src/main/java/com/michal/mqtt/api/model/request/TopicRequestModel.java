@@ -17,7 +17,7 @@ public class TopicRequestModel implements Serializable {
     @NotNull
     @ApiModelProperty(value = "broker id", required = true)
     private Long brokerId;
-    @NotEmpty
+    @NotEmpty(message = "Topic can't be empty!")
     @ApiModelProperty(value = "topic", allowableValues = "home/kitchen/temperature", required = true)
     private String topic;
 
