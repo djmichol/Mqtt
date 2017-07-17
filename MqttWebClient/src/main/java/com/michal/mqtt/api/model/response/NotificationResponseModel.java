@@ -37,7 +37,7 @@ public class NotificationResponseModel implements Serializable{
     }
 
     public String getDataTimestamp() {
-        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         return dt1.format(dataTimestamp);
     }
 

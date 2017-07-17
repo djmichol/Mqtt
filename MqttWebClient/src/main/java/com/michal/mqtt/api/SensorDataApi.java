@@ -1,7 +1,9 @@
 package com.michal.mqtt.api;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.michal.dao.model.SensorData;
 import com.michal.mqtt.api.converter.response.SensorDataModelConverter;
 import com.michal.mqtt.api.model.response.SensorDataResponseModel;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.michal.dao.SensorDataDao;
@@ -48,6 +51,12 @@ public class SensorDataApi {
     @RequestMapping(method = RequestMethod.GET, value = "/dataType={type}")
     public ResponseEntity<List<SensorDataResponseModel>> getAllTopicDataByType(@PathVariable(value = "type") String type) throws MqttException {
         List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getDataForRoomByType(null, type));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/latest")
+    public ResponseEntity<List<SensorDataResponseModel>> getLatestDataFromSensors(){
+        List<SensorDataResponseModel> response = sensorDataModelConverter.convert(sensorDataRepo.getLatestData());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

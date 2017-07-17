@@ -1,5 +1,6 @@
 package com.michal.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -41,15 +42,33 @@ public class SensorDataDaoImpl implements SensorDataDao {
     @Override
     @Transactional
     public List<SensorData> getDataForRoomByType(String room, String type) {
-        String searchQuery = "Select data from SensorData data where data.dataType = :type";
-        if (room!=null) {
-            searchQuery += "and data.dataRoom=:dataRoom";
+        String searchQuery = "Select data from SensorData data where data.dataType = :type ";
+        if (room != null) {
+            searchQuery += " and data.dataRoom=:dataRoom";
         }
         Query query = entityManager.createQuery(searchQuery, SensorData.class);
         query.setParameter("type", type);
-        if (room!=null) {
+        if (room != null) {
             query.setParameter("dataRoom", room);
         }
         return query.getResultList();
+    }
+
+    @Override
+    public List<SensorData> getLatestData() {
+        String searchQuery = "Select data.dataType, data.dataRoom, MAX(data.dataTimestamp) from SensorData data group by data.dataType, data.dataRoom ";
+        Query query = entityManager.createQuery(searchQuery);
+        List<Object[]> objects = query.getResultList();
+        List<SensorData> results = new ArrayList<>();
+        Query query2 = entityManager.createQuery("Select data from SensorData data where data.dataType = :type and data.dataRoom=:dataRoom and data.dataTimestamp=:time",
+                SensorData.class);
+
+        objects.forEach(o -> {
+            query2.setParameter("type", o[0]);
+            query2.setParameter("dataRoom", o[1]);
+            query2.setParameter("time", o[2]);
+            results.add((SensorData) query2.getSingleResult());
+        });
+        return results;
     }
 }

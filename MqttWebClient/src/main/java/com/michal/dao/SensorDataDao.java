@@ -10,5 +10,6 @@ public interface SensorDataDao {
 	List<SensorData> getAllData();	
 	List<SensorData> getDataByType(String type);
 	List<SensorData> getDataForRoomByType(String room, String type);
+	List<SensorData> getLatestData();
 	
 }
