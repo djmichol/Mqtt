@@ -14,11 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import com.michal.mqtt.callback.topic.CallbackEnum;
 
 @Entity
-@Table(name = "mqttTopic")
+@Table(name = "mqttTopic" , uniqueConstraints = { @UniqueConstraint( columnNames = { "topic_name", "mqtt_broker_id", "topic_callback" } ) } )
 public class Topic implements Serializable{
 
 	private static final long serialVersionUID = 6586347452769642461L;

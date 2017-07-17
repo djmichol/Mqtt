@@ -1,6 +1,7 @@
 package com.michal.dao;
 
 import com.michal.dao.model.Topic;
+import com.michal.mqtt.callback.topic.CallbackEnum;
 
 public interface TopicDao {
 
@@ -8,7 +9,7 @@ public interface TopicDao {
 
 	Topic getTopicById(Long id);
 
-	Topic getTopicByNameAndBorkerId(String topic, Long brokerId);
+	Topic getTopicForBrokerByTopicAndCallback(String topic, Long brokerId, CallbackEnum callback);
 
 	boolean removeTopic(Long id);
 }

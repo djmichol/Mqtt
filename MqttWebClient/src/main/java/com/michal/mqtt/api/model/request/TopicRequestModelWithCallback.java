@@ -5,10 +5,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+
 @ApiModel(description = "Topic with callback")
 public class TopicRequestModelWithCallback extends TopicRequestModel{
 
-    @NotEmpty(message = "Topic callback can't be empty!")
+    @NotNull(message = "Topic callback can't be empty!")
     @ApiModelProperty(value = "topicCallback", required = true)
     private CallbackEnum topicCallback;
 

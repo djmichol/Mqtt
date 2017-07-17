@@ -18,6 +18,7 @@ import com.michal.mqtt.api.converter.request.PlaceRequestModelToPlaceConverter;
 import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseModelConverter;
 import com.michal.mqtt.api.converter.response.NotificationToNotificationModelConverter;
 import com.michal.mqtt.api.converter.response.PlaceToPlaceResponseModelConverter;
+import com.michal.mqtt.api.converter.response.TopicToTopicModelConverter;
 import com.michal.mqtt.callback.topic.CallbackFactory;
 import com.michal.mqtt.error.ExceptionController;
 import com.michal.mqtt.api.MessageApi;
@@ -50,8 +51,8 @@ public class ApiConfigurtaion {
     }
 
     @Bean
-    public TopicsApi topicsApi(TopicDao topicRepo, MqttApplication mqttApplication, CallbackFactory callbackFactory) {
-        return new TopicsApi(topicRepo, mqttApplication, callbackFactory);
+    public TopicsApi topicsApi(TopicDao topicRepo, MqttApplication mqttApplication, CallbackFactory callbackFactory, TopicToTopicModelConverter topicToTopicModelConverter) {
+        return new TopicsApi(topicRepo, mqttApplication, callbackFactory, topicToTopicModelConverter);
     }
 
     @Bean

@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.michal.mqtt.callback.topic.CallbackEnum;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.michal.dao.TopicDao;
@@ -31,10 +32,11 @@ public class TopicDaoImpl implements TopicDao {
 
     @Override
     @Transactional
-    public Topic getTopicByNameAndBorkerId(String topic, Long brokerId) {
-        Query query = entityManager.createQuery("Select topic from Topic topic where topic.topic = :topic and topic.broker.id=:brokerId", Topic.class);
+    public Topic getTopicForBrokerByTopicAndCallback(String topic, Long brokerId, CallbackEnum callback) {
+        Query query = entityManager.createQuery("Select topic from Topic topic where topic.topic = :topic and topic.broker.id=:brokerId and topic.callbackEnum = :callback", Topic.class);
         query.setParameter("topic", topic);
         query.setParameter("brokerId", brokerId);
+        query.setParameter("callback",callback);
         return (Topic) query.getSingleResult();
     }
 
