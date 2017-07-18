@@ -43,7 +43,7 @@ public class NotificationDaoImpl implements NotificationDao {
     @SuppressWarnings("unchecked")
     @Override
     @Transactional
-    public List<Notification> getAllNotifications(String topic) {
+    public List<Notification> getAllNotifications() {
         return entityManager.createQuery("from Notification").getResultList();
     }
 }

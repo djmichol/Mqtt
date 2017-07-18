@@ -9,6 +9,6 @@ public interface NotificationDao {
     Notification create(Notification data);
     void readNotification(Long notificationId);
     List<Notification> getAllNewNotifications();
-    List<Notification> getAllNotifications(String topic);
+    List<Notification> getAllNotifications();
 
 }
