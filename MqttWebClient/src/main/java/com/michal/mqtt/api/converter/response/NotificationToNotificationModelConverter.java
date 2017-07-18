@@ -12,6 +12,8 @@ public class NotificationToNotificationModelConverter extends Converter<Notifica
             notificationResponseModel.setDataTimestamp(notification.getDataTimestamp());
             notificationResponseModel.setMessage(notification.getMessage());
             notificationResponseModel.setTopic(notification.getTopic());
+            notificationResponseModel.setRead(notification.getRead());
+            notificationResponseModel.setId(notification.getNotificationId());
         }
         return notificationResponseModel;
     }

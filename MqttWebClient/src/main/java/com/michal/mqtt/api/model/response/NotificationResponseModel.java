@@ -13,12 +13,24 @@ public class NotificationResponseModel implements Serializable{
     public NotificationResponseModel() {
     }
 
+    @ApiModelProperty(value = "id")
+    private Long id;
     @ApiModelProperty(value = "message")
     private String message;
     @ApiModelProperty(value = "topic")
     private String topic;
     @ApiModelProperty(value = "timeStamp")
     private Date dataTimestamp;
+    @ApiModelProperty(value = "read")
+    private boolean read;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getMessage() {
         return message;
@@ -43,5 +55,13 @@ public class NotificationResponseModel implements Serializable{
 
     public void setDataTimestamp(Date dataTimestamp) {
         this.dataTimestamp = dataTimestamp;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }
