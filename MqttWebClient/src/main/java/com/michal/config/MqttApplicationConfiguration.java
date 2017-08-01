@@ -1,6 +1,8 @@
 package com.michal.config;
 
+import com.michal.mqtt.api.secure.interceptor.AuthInterceptor;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -26,6 +29,26 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableWebMvc
 @Import({DataBaseConfiguration.class, RepositoryConfig.class, ApiConfigurtaion.class, ConverterConfiguration.class, CallbackConfiguration.class})
 public class MqttApplicationConfiguration extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+
+    @Bean
+    public AuthInterceptor authInterceptor() {
+        return new AuthInterceptor();
+    }
+
+    @Autowired
+    private AuthInterceptor authInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/clients")
+                .addPathPatterns("/dictionary")
+                .addPathPatterns("/messages")
+                .addPathPatterns("/notifications")
+                .addPathPatterns("/place")
+                .addPathPatterns("/sensorsData")
+                .addPathPatterns("/topics");
+    }
 
     @Bean
     public CorsFilter corsFilter() {

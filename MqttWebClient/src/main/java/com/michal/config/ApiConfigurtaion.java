@@ -8,6 +8,7 @@ import com.michal.dao.PlacesDao;
 import com.michal.dao.SensorDataDao;
 import com.michal.dao.TopicDao;
 import com.michal.mqtt.MqttApplication;
+import com.michal.mqtt.api.AuthApi;
 import com.michal.mqtt.api.DictionaryApi;
 import com.michal.mqtt.api.NotificationsApi;
 import com.michal.mqtt.api.PlacesApi;
@@ -19,6 +20,7 @@ import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseMode
 import com.michal.mqtt.api.converter.response.NotificationToNotificationModelConverter;
 import com.michal.mqtt.api.converter.response.PlaceToPlaceResponseModelConverter;
 import com.michal.mqtt.api.converter.response.TopicToTopicModelConverter;
+import com.michal.mqtt.api.utils.RestCallService;
 import com.michal.mqtt.callback.topic.CallbackFactory;
 import com.michal.mqtt.error.ExceptionController;
 import com.michal.mqtt.api.MessageApi;
@@ -30,6 +32,7 @@ import com.michal.mqtt.api.converter.response.SensorDataModelConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.env.Environment;
 
 @Configuration
 public class ApiConfigurtaion {
@@ -85,4 +88,13 @@ public class ApiConfigurtaion {
                 dictionaryDefinitionRequestModelToDictionaryDefinitionConverter, dictionaryValueModelToDictionaryValuesConverter);
     }
 
+    @Bean
+    public AuthApi authApi(RestCallService restCallService){
+        return new AuthApi(restCallService);
+    }
+
+    @Bean
+    public RestCallService restCallService(Environment environment){
+        return new RestCallService(environment);
+    }
 }

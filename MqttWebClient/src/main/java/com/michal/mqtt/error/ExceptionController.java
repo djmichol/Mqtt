@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 @ControllerAdvice
@@ -28,5 +29,10 @@ public class ExceptionController {
     @ExceptionHandler(value =Exception.class)
     public ResponseEntity<ErrorData> handleOtherException(Exception e) {
         return new ResponseEntity<>(new ErrorBuilder().message("Other error").error(e.getMessage()).build(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value =HttpClientErrorException.class)
+    public ResponseEntity<ErrorData> handleRestClientException(HttpClientErrorException e) {
+        return new ResponseEntity<>(new ErrorBuilder().message("Auth error").error(e.getMessage()).build(),HttpStatus.UNAUTHORIZED);
     }
 }
