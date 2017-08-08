@@ -5,7 +5,6 @@ import com.michal.dao.api.SensorDao;
 import com.michal.dao.model.homestructure.Room;
 import com.michal.mqtt.api.converter.request.RoomRequestModelToRoomConverter;
 import com.michal.mqtt.api.converter.response.RoomToRoomDetailsResponseConverter;
-import com.michal.mqtt.api.converter.response.RoomToRoomResponseConverter;
 import com.michal.mqtt.api.homestructure.model.request.RoomRequestModel;
 import com.michal.mqtt.api.homestructure.model.response.RoomResponseModel;
 import org.springframework.http.HttpStatus;

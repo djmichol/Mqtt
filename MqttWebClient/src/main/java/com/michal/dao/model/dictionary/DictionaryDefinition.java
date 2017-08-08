@@ -26,7 +26,7 @@ public class DictionaryDefinition implements Serializable{
     @Column(name = "dic_def_code", nullable = false)
     private String dictDefCode;
     @OneToMany(mappedBy = "dictionaryDefinition", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private Set<DictionaryValues> values = new HashSet<DictionaryValues>(0);
+    private Set<DictionaryValues> values = new HashSet<>(0);
 
     public DictionaryDefinition() {
     }

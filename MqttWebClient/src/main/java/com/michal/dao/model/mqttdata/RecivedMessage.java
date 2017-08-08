@@ -1,7 +1,6 @@
 package com.michal.dao.model.mqttdata;
 
 import com.michal.dao.model.networkstructure.Broker;
-import com.michal.dao.model.networkstructure.Sensor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

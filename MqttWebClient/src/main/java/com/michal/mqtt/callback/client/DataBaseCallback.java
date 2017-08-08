@@ -12,13 +12,11 @@ import java.util.Date;
 public class DataBaseCallback extends MqttCallbackAbstract {
 
     private RecivedMessageDao recivedMessageDao;
-    private BrokerDao brokerDao;
     private RecivedMessageExtractor recivedMessageExtractor;
 
     public DataBaseCallback(MqttClientImpl client, RecivedMessageDao recivedMessageDao, BrokerDao brokerDao, RecivedMessageExtractor recivedMessageExtractor) {
         super(brokerDao, client);
         this.recivedMessageDao = recivedMessageDao;
-        this.brokerDao = brokerDao;
         this.recivedMessageExtractor = recivedMessageExtractor;
     }
 

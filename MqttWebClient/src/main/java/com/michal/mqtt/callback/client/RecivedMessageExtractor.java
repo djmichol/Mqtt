@@ -3,6 +3,7 @@ package com.michal.mqtt.callback.client;
 import com.michal.dao.api.DictionaryDefinitionDao;
 import com.michal.dao.api.SensorDao;
 import com.michal.dao.model.dictionary.DictionaryDefinition;
+import com.michal.dao.model.dictionary.DictionaryValues;
 import com.michal.dao.model.networkstructure.Sensor;
 
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class RecivedMessageExtractor {
 
     private SensorMessageListener checkType() {
         DictionaryDefinition dictionaryDefinition = dictionaryDefinitionDao.getDictionaryDefinitionByCode("SENSOR_TYPES");
-        if(dictionaryDefinition.getValues().stream().map(dictionaryValues -> dictionaryValues.getDictValVal()).collect(Collectors.toList()).contains(sensor.getType())){
+        if(dictionaryDefinition.getValues().stream().map(DictionaryValues::getDictValVal).collect(Collectors.toList()).contains(sensor.getType())){
             return  sensorDataListener;
         }
         return  sensorDataListener;

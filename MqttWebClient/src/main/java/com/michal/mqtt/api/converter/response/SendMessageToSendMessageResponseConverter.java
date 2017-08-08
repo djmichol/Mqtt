@@ -1,9 +1,7 @@
 package com.michal.mqtt.api.converter.response;
 
-import com.michal.dao.model.mqttdata.RecivedMessage;
 import com.michal.dao.model.mqttdata.SendMessage;
 import com.michal.mqtt.api.converter.Converter;
-import com.michal.mqtt.api.mqtt.model.response.RecivedMessagesResponseModel;
 import com.michal.mqtt.api.mqtt.model.response.SendMessagesResponseModel;
 
 public class SendMessageToSendMessageResponseConverter extends Converter<SendMessage, SendMessagesResponseModel>{

@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -25,13 +26,15 @@ public class DataBaseConfiguration {
     private Environment env;
 
     @Autowired
+    @Qualifier("dataSourceMqtt")
     private DataSource dataSource;
 
     @Autowired
+    @Qualifier("entityManagerFactoryMqtt")
     private LocalContainerEntityManagerFactoryBean entityManagerFactory;
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource dataSourceMqtt() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
         dataSource.setUrl(env.getProperty("db.url"));
@@ -41,7 +44,7 @@ public class DataBaseConfiguration {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryMqtt() {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
         entityManagerFactory.setDataSource(dataSource);

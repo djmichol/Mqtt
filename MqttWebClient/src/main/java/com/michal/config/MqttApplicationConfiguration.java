@@ -1,6 +1,5 @@
 package com.michal.config;
 
-import com.michal.mqtt.MqttClientImpl;
 import com.michal.mqtt.api.secure.interceptor.AuthInterceptor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -50,6 +47,7 @@ public class MqttApplicationConfiguration extends WebMvcConfigurerAdapter implem
                 .addPathPatterns("/sensorsData")
                 .addPathPatterns("/sensor")
                 .addPathPatterns("/node")
+                .addPathPatterns("/**")
                 .addPathPatterns("/topics");
     }
 

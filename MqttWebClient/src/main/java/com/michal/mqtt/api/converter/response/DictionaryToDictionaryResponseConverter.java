@@ -1,6 +1,7 @@
 package com.michal.mqtt.api.converter.response;
 
 import com.michal.dao.model.dictionary.DictionaryDefinition;
+import com.michal.dao.model.dictionary.DictionaryValues;
 import com.michal.mqtt.api.converter.Converter;
 import com.michal.mqtt.api.dictionary.model.response.DictionaryResponse;
 
@@ -13,7 +14,7 @@ public class DictionaryToDictionaryResponseConverter extends Converter<Dictionar
         if(dictionaryDefinition!=null){
             dictionaryResponse.setDictionaryCode(dictionaryDefinition.getDictDefCode());
             dictionaryResponse.setDictionaryName(dictionaryDefinition.getDictDefName());
-            dictionaryResponse.setDictionaryValues(dictionaryDefinition.getValues().stream().map(value -> value.getDictValVal()).collect(Collectors.toList()));
+            dictionaryResponse.setDictionaryValues(dictionaryDefinition.getValues().stream().map(DictionaryValues::getDictValVal).collect(Collectors.toList()));
         }
         return dictionaryResponse;
     }

@@ -1,9 +1,7 @@
 package com.michal.dao.impl;
 
 import com.michal.dao.api.SendMessageDao;
-import com.michal.dao.api.SensorDao;
 import com.michal.dao.model.mqttdata.SendMessage;
-import com.michal.dao.model.networkstructure.Sensor;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;

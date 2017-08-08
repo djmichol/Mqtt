@@ -1,18 +1,11 @@
 package com.michal.mqtt.api.homestructure.model.response;
 
-import com.michal.dao.model.networkstructure.Sensor;
-import com.michal.mqtt.api.networkstructure.model.request.SensorRequestModel;
 import com.michal.mqtt.api.networkstructure.model.response.SensorResponseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @ApiModel(description = "Room response model")
 public class RoomResponseModel implements Serializable {

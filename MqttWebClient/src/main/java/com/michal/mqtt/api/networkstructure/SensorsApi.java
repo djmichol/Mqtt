@@ -5,7 +5,6 @@ import com.michal.dao.api.SensorDao;
 import com.michal.dao.model.networkstructure.Sensor;
 import com.michal.mqtt.api.converter.request.SensorRequestToNodeSensorConverter;
 import com.michal.mqtt.api.converter.response.SensorToSensorDetailsResponseConverter;
-import com.michal.mqtt.api.converter.response.SensorToSensorResponseConverter;
 import com.michal.mqtt.api.networkstructure.model.request.SensorRequestModel;
 import com.michal.mqtt.api.networkstructure.model.response.SensorResponseModel;
 import org.springframework.http.HttpStatus;
