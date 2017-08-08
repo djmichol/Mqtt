@@ -1,9 +1,9 @@
 package com.michal.mqtt.api.converter.request;
 
-import com.michal.dao.DictionaryDefinitionDao;
-import com.michal.dao.model.DictionaryValues;
+import com.michal.dao.api.DictionaryDefinitionDao;
+import com.michal.dao.model.dictionary.DictionaryValues;
 import com.michal.mqtt.api.converter.Converter;
-import com.michal.mqtt.api.model.request.DictionaryValueRequestModel;
+import com.michal.mqtt.api.dictionary.model.request.DictionaryValueRequestModel;
 
 public class DictionaryValueModelToDictionaryValuesConverter extends Converter<DictionaryValueRequestModel, DictionaryValues> {
 

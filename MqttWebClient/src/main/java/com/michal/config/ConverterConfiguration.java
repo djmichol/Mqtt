@@ -1,16 +1,26 @@
 package com.michal.config;
 
-import com.michal.dao.DictionaryDefinitionDao;
+import com.michal.dao.api.BrokerDao;
+import com.michal.dao.api.DictionaryDefinitionDao;
+import com.michal.dao.api.NodeDao;
+import com.michal.dao.api.SensorDao;
 import com.michal.mqtt.api.converter.request.BrokerModelToBrokerConverter;
 import com.michal.mqtt.api.converter.request.DictionaryDefinitionRequestModelToDictionaryDefinitionConverter;
 import com.michal.mqtt.api.converter.request.DictionaryValueModelToDictionaryValuesConverter;
-import com.michal.mqtt.api.converter.request.PlaceRequestModelToPlaceConverter;
-import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseModelConverter;
+import com.michal.mqtt.api.converter.request.NodeRequestToBreokerNodeConverter;
+import com.michal.mqtt.api.converter.request.RoomRequestModelToRoomConverter;
+import com.michal.mqtt.api.converter.request.SensorRequestToNodeSensorConverter;
+import com.michal.mqtt.api.converter.response.BrokerToClientModelConverter;
+import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseConverter;
 import com.michal.mqtt.api.converter.response.MqttClientToClientModelConverter;
-import com.michal.mqtt.api.converter.response.NotificationToNotificationModelConverter;
-import com.michal.mqtt.api.converter.response.PlaceToPlaceResponseModelConverter;
+import com.michal.mqtt.api.converter.response.NodeToNodeResponseConverter;
+import com.michal.mqtt.api.converter.response.RecivedMessageToRecivedMessageResponseConverter;
+import com.michal.mqtt.api.converter.response.RoomToRoomDetailsResponseConverter;
+import com.michal.mqtt.api.converter.response.RoomToRoomResponseConverter;
+import com.michal.mqtt.api.converter.response.SendMessageToSendMessageResponseConverter;
 import com.michal.mqtt.api.converter.response.SensorDataModelConverter;
-import com.michal.mqtt.api.converter.response.TopicToTopicModelConverter;
+import com.michal.mqtt.api.converter.response.SensorToSensorDetailsResponseConverter;
+import com.michal.mqtt.api.converter.response.SensorToSensorResponseConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,52 +28,87 @@ import org.springframework.context.annotation.Configuration;
 public class ConverterConfiguration {
 
     @Bean
-    public SensorDataModelConverter sensorDataModelConverter(){
+    public SensorDataModelConverter sensorDataModelConverter() {
         return new SensorDataModelConverter();
     }
 
     @Bean
-    public MqttClientToClientModelConverter mqttClientToClientModelConverter(TopicToTopicModelConverter topicToTopicModelConverter) {
-        return new MqttClientToClientModelConverter(topicToTopicModelConverter);
+    public SensorToSensorDetailsResponseConverter sensorToSensorDetailsResponseConverter(RoomToRoomResponseConverter roomToRoomResponseConverter) {
+        return new SensorToSensorDetailsResponseConverter(roomToRoomResponseConverter);
     }
 
     @Bean
-    public TopicToTopicModelConverter topicToTopicModelConverter(){
-        return new TopicToTopicModelConverter();
+    public SensorToSensorResponseConverter sensorToSensorResponseConverter() {
+        return new SensorToSensorResponseConverter();
     }
 
     @Bean
-    public NotificationToNotificationModelConverter notificationToNotificationModelConverter(){
-        return new NotificationToNotificationModelConverter();
+    public NodeToNodeResponseConverter brokerNodeToNodeResponseConverter(SensorToSensorDetailsResponseConverter sensorToSensorResponseConverter) {
+        return new NodeToNodeResponseConverter(sensorToSensorResponseConverter);
     }
 
     @Bean
-    public BrokerModelToBrokerConverter brokerModelToBrokerConverter(){
+    public MqttClientToClientModelConverter mqttClientToClientModelConverter(NodeToNodeResponseConverter nodeToNodeResponseConverter) {
+        return new MqttClientToClientModelConverter(nodeToNodeResponseConverter);
+    }
+
+    @Bean
+    public BrokerModelToBrokerConverter brokerModelToBrokerConverter() {
         return new BrokerModelToBrokerConverter();
     }
 
     @Bean
-    public PlaceToPlaceResponseModelConverter placeToPlaceResponseModelConverter(){
-        return new PlaceToPlaceResponseModelConverter();
+    public RoomToRoomResponseConverter placeToPlaceResponseModelConverter() {
+        return new RoomToRoomResponseConverter();
     }
 
     @Bean
-    public PlaceRequestModelToPlaceConverter placeRequestModelToPlaceConverter(){
-        return new PlaceRequestModelToPlaceConverter();
+    public RoomRequestModelToRoomConverter placeRequestModelToPlaceConverter(SensorDao sensorDao) {
+        return new RoomRequestModelToRoomConverter(sensorDao);
     }
 
     @Bean
-    public DictionaryToDictionaryResponseModelConverter dictionaryToDictionaryResponseModelConverter(){
-        return new DictionaryToDictionaryResponseModelConverter();
+    public DictionaryToDictionaryResponseConverter dictionaryToDictionaryResponseModelConverter() {
+        return new DictionaryToDictionaryResponseConverter();
     }
 
     @Bean
-    public DictionaryDefinitionRequestModelToDictionaryDefinitionConverter dictionaryDefinitionRequestModelToDictionaryDefinitionConverter(){
+    public DictionaryDefinitionRequestModelToDictionaryDefinitionConverter dictionaryDefinitionRequestModelToDictionaryDefinitionConverter() {
         return new DictionaryDefinitionRequestModelToDictionaryDefinitionConverter();
     }
 
     @Bean
-    public DictionaryValueModelToDictionaryValuesConverter dictionaryValueModelToDictionaryValuesConverter(DictionaryDefinitionDao dictionaryDefinitionDao){
+    public DictionaryValueModelToDictionaryValuesConverter dictionaryValueModelToDictionaryValuesConverter(DictionaryDefinitionDao dictionaryDefinitionDao) {
         return new DictionaryValueModelToDictionaryValuesConverter(dictionaryDefinitionDao);
+    }
+
+    @Bean
+    public NodeRequestToBreokerNodeConverter nodeRequestToBreokerNodeConverter(BrokerDao brokerDao) {
+        return new NodeRequestToBreokerNodeConverter(brokerDao);
+    }
+
+    @Bean
+    public SensorRequestToNodeSensorConverter sensorRequestToNodeSensorConverter(NodeDao nodeDao) {
+        return new SensorRequestToNodeSensorConverter(nodeDao);
+    }
+
+    @Bean
+    public BrokerToClientModelConverter brokerToClientModelConverter(NodeToNodeResponseConverter nodeToNodeResponseConverter){
+        return new BrokerToClientModelConverter(nodeToNodeResponseConverter);
+    }
+
+    @Bean
+    public RoomToRoomDetailsResponseConverter roomToRoomDetailsResponseConverter(SensorToSensorResponseConverter sensorToSensorResponseConverter){
+        return new RoomToRoomDetailsResponseConverter(sensorToSensorResponseConverter);
+    }
+
+    @Bean
+    public RecivedMessageToRecivedMessageResponseConverter recivedMessageToRecivedMessageResponseConverter(){
+        return new RecivedMessageToRecivedMessageResponseConverter();
+    }
+
+    @Bean
+    public SendMessageToSendMessageResponseConverter sendMessageToSendMessageResponseConverter(){
+        return new SendMessageToSendMessageResponseConverter();
     }
 }

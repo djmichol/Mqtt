@@ -1,9 +1,9 @@
 package com.michal.mqtt.api.converter.request;
 
 
-import com.michal.dao.model.Broker;
+import com.michal.dao.model.networkstructure.Broker;
 import com.michal.mqtt.api.converter.Converter;
-import com.michal.mqtt.api.model.request.BrokerRequestModel;
+import com.michal.mqtt.api.networkstructure.model.request.BrokerRequestModel;
 
 public class BrokerModelToBrokerConverter extends Converter<BrokerRequestModel, Broker>{
     @Override
@@ -12,7 +12,8 @@ public class BrokerModelToBrokerConverter extends Converter<BrokerRequestModel, 
         if(brokerRequestModel!=null) {
             broker.setPassword(brokerRequestModel.getPassword());
             broker.setUser(brokerRequestModel.getUser());
-            broker.setUri(brokerRequestModel.getUrl());
+            broker.setUrl(brokerRequestModel.getUrl());
+            broker.setName(brokerRequestModel.getName());
         }
         return broker;
     }

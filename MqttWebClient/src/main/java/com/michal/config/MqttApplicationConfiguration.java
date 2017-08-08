@@ -1,5 +1,6 @@
 package com.michal.config;
 
+import com.michal.mqtt.MqttClientImpl;
 import com.michal.mqtt.api.secure.interceptor.AuthInterceptor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableWebMvc
-@Import({DataBaseConfiguration.class, RepositoryConfig.class, ApiConfigurtaion.class, ConverterConfiguration.class, CallbackConfiguration.class})
+@Import({DataBaseConfiguration.class, RepositoryConfig.class, ApiConfigurtaion.class, ConverterConfiguration.class, DataListenersConfiguration.class})
 public class MqttApplicationConfiguration extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     @Bean
@@ -47,6 +48,8 @@ public class MqttApplicationConfiguration extends WebMvcConfigurerAdapter implem
                 .addPathPatterns("/notifications")
                 .addPathPatterns("/place")
                 .addPathPatterns("/sensorsData")
+                .addPathPatterns("/sensor")
+                .addPathPatterns("/node")
                 .addPathPatterns("/topics");
     }
 

@@ -1,8 +1,8 @@
 package com.michal.dao.impl;
 
 
-import com.michal.dao.DictionaryDefinitionDao;
-import com.michal.dao.model.DictionaryDefinition;
+import com.michal.dao.api.DictionaryDefinitionDao;
+import com.michal.dao.model.dictionary.DictionaryDefinition;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

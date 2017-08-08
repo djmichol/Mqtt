@@ -1,18 +1,23 @@
 package com.michal.mqtt;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import com.michal.mqtt.callback.client.PrintCallback;
+import com.michal.dao.api.BrokerDao;
+import com.michal.dao.api.RecivedMessageDao;
+import com.michal.dao.api.SendMessageDao;
+import com.michal.dao.model.mqttdata.SendMessage;
+import com.michal.mqtt.callback.client.DataBaseCallback;
+import com.michal.mqtt.callback.client.RecivedMessageExtractor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import com.michal.dao.model.Broker;
+import com.michal.dao.model.networkstructure.Broker;
 
 public class MqttClientImpl implements Serializable {
 
@@ -20,13 +25,26 @@ public class MqttClientImpl implements Serializable {
 
     final Logger logger = LogManager.getLogger(MqttClientImpl.class);
 
+    private SendMessageDao sendMessageDao;
+    private RecivedMessageDao recivedMessageDao;
+    private RecivedMessageExtractor recivedMessageExtractor;
+    private BrokerDao brokerDao;
     private MqttClient client;
     private MqttConnectOptions connectionOptions;
     private Broker broker;
 
-    public MqttClientImpl(Broker broker, String clientId) throws MqttException {
+    public MqttClientImpl(Broker broker, String clientId, SendMessageDao sendMessageDao, RecivedMessageDao recivedMessageDao, RecivedMessageExtractor recivedMessageExtractor,
+                          BrokerDao brokerDao) throws MqttException {
         this.broker = broker;
-        client = new MqttClient(broker.getUri(), clientId, new MemoryPersistence());
+        this.sendMessageDao = sendMessageDao;
+        this.recivedMessageDao = recivedMessageDao;
+        this.recivedMessageExtractor = recivedMessageExtractor;
+        this.brokerDao = brokerDao;
+        client = new MqttClient(broker.getUrl(), clientId, new MemoryPersistence());
+        initConnectionOptions(broker);
+    }
+
+    private void initConnectionOptions(Broker broker) {
         connectionOptions = new MqttConnectOptions();
         connectionOptions.setCleanSession(true);
         connectionOptions.setAutomaticReconnect(true);
@@ -37,14 +55,19 @@ public class MqttClientImpl implements Serializable {
     public boolean connect() throws MqttException {
         logger.info("mqtt-client connecting to broker: " + client.getServerURI());
         client.connect(connectionOptions);
-        client.setCallback(new PrintCallback(this));
+        client.setCallback(new DataBaseCallback(this, recivedMessageDao, brokerDao, recivedMessageExtractor));
+        brokerDao.updateStatus(broker.getId(), new Date(), "connected");
         logger.info("mqtt-client connected");
+        subscribeAllTopics();
         return true;
-
     }
 
-    public boolean subscribeTopic(String topic, IMqttMessageListener messageListener) throws MqttException {
-        client.subscribe(topic, 0, messageListener);
+    private void subscribeAllTopics() throws MqttException {
+        subscribeTopic("#");
+    }
+
+    public boolean subscribeTopic(String topic) throws MqttException {
+        client.subscribe(topic, 0);
         logger.info("Subscribed topic '{}'", topic);
         return true;
     }
@@ -56,14 +79,30 @@ public class MqttClientImpl implements Serializable {
     }
 
     public void publish(String topic, String message, int pubQoS) throws MqttException {
+        MqttMessage messageToPublish = getMqttMessageToPublish(message, pubQoS);
+        logSendMessageToDB(topic, message);
+        client.publish(topic, messageToPublish);
+    }
+
+    private MqttMessage getMqttMessageToPublish(String message, int pubQoS) {
         MqttMessage messageToPublish = new MqttMessage(message.getBytes());
         messageToPublish.setQos(pubQoS);
         messageToPublish.setRetained(false);
-        client.publish(topic, messageToPublish);
+        return messageToPublish;
+    }
+
+    private void logSendMessageToDB(String topic, String message) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setMessage(message);
+        sendMessage.setBroker(this.broker);
+        sendMessage.setTopic(topic);
+        sendMessage.setTimestamp(new Date());
+        sendMessageDao.create(sendMessage);
     }
 
     public boolean disconnect() throws MqttException {
         client.disconnect();
+        brokerDao.updateStatus(broker.getId(), new Date(), "disconnected");
         logger.info("mqtt-client disconnected");
         return true;
     }
