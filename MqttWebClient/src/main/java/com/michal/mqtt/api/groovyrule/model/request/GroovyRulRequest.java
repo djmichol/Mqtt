@@ -17,14 +17,11 @@ public class GroovyRulRequest implements Serializable {
     private String rule;
     @ApiModelProperty(value = "rule", allowableValues = "description", required = false)
     private String description;
-    @NotEmpty(message = "message can't be empty!")
-    @ApiModelProperty(value = "message", allowableValues = "message", required = true)
-    private String message;
     @NotNull(message = "Rule can't be empty!")
     @ApiModelProperty(value = "rule",required = true)
     private GroovyRule.VariableType type;
-    @ApiModelProperty(value = "rule", required = true)
-    private List<GroovyRule.ActionType> actions;
+    @ApiModelProperty(value = "rule", required = false)
+    private List<String> actionsIds;
     @NotEmpty(message = "sensorId can't be empty!")
     @ApiModelProperty(value = "sensorId", allowableValues = "1", required = true)
     private String sensorId;
@@ -48,14 +45,6 @@ public class GroovyRulRequest implements Serializable {
         this.description = description;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public GroovyRule.VariableType getType() {
         return type;
     }
@@ -64,19 +53,19 @@ public class GroovyRulRequest implements Serializable {
         this.type = type;
     }
 
-    public List<GroovyRule.ActionType> getActions() {
-        return actions;
-    }
-
-    public void setActions(List<GroovyRule.ActionType> actions) {
-        this.actions = actions;
-    }
-
     public String getSensorId() {
         return sensorId;
     }
 
     public void setSensorId(String sensorId) {
         this.sensorId = sensorId;
+    }
+
+    public List<String> getActionsIds() {
+        return actionsIds;
+    }
+
+    public void setActionsIds(List<String> actionsIds) {
+        this.actionsIds = actionsIds;
     }
 }

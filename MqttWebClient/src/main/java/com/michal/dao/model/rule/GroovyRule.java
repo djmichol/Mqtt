@@ -2,8 +2,8 @@ package com.michal.dao.model.rule;
 
 import com.michal.dao.model.networkstructure.Sensor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,10 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "groovy_rule")
@@ -29,15 +31,12 @@ public class GroovyRule implements Serializable {
     private String rule;
     @Column(name = "groovy_rule_description", nullable = true)
     private String description;
-    @Column(name = "groovy_rule_message", nullable = false)
-    private String message;
     @Enumerated(EnumType.STRING)
     @Column(name = "groovy_rule_type", nullable = false)
     private VariableType type;
-    @Column(name = "groovy_rule_action", nullable = false)
-    @Enumerated
-    @ElementCollection(targetClass = ActionType.class, fetch = FetchType.EAGER)
-    private List<ActionType> actions;
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "groovyRules", nullable = false)
+    private Set<Action> actions = new HashSet<>(0);
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "groovy_rule_sensor", nullable = false)
     private Sensor sensor;
@@ -85,27 +84,17 @@ public class GroovyRule implements Serializable {
         this.type = type;
     }
 
-    public List<ActionType> getActions() {
+    public Set<Action> getActions() {
         return actions;
     }
 
-    public void setActions(List<ActionType> actions) {
+    public void setActions(Set<Action> actions) {
         this.actions = actions;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public enum VariableType {
         NUMBER, BOOLEAN, STRING;
     }
 
-    public enum ActionType {
-        MAIL, SMS;
-    }
+
 }

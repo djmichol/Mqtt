@@ -1,6 +1,6 @@
 package com.michal.mqtt.engine.notifications;
 
-import com.michal.dao.model.rule.GroovyRule;
+import com.michal.dao.model.rule.Action;
 
 public class NotificationActionFactory {
 
@@ -10,8 +10,8 @@ public class NotificationActionFactory {
         this.emailAction = emailAction;
     }
 
-    public NotificationAction getAction(GroovyRule.ActionType actionType){
-        if(actionType.equals(GroovyRule.ActionType.MAIL)){
+    public NotificationAction getAction(Action.ActionType actionType){
+        if(actionType.equals(Action.ActionType.MAIL)){
             return emailAction;
         }else{
             return null;

@@ -10,6 +10,7 @@ import com.michal.mqtt.engine.client.RecivedMessageExtractor;
 import com.michal.mqtt.engine.client.SensorDataListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 @Configuration
 public class DataListenersConfiguration {
@@ -35,7 +36,7 @@ public class DataListenersConfiguration {
     }
 
     @Bean
-    public EmailAction emailAction() {
-        return new EmailAction();
+    public EmailAction emailAction(Environment env) {
+        return new EmailAction(env);
     }
 }

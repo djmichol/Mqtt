@@ -1,5 +1,6 @@
 package com.michal.config;
 
+import com.michal.dao.api.ActionDao;
 import com.michal.dao.api.BrokerDao;
 import com.michal.dao.api.DictionaryDefinitionDao;
 import com.michal.dao.api.DictionaryValuesDao;
@@ -10,11 +11,13 @@ import com.michal.dao.api.SendMessageDao;
 import com.michal.dao.api.SensorDao;
 import com.michal.dao.api.SensorDataDao;
 import com.michal.mqtt.MqttApplication;
+import com.michal.mqtt.api.converter.request.ActionRequestToActionConverter;
 import com.michal.mqtt.api.converter.request.BrokerModelToBrokerConverter;
 import com.michal.mqtt.api.converter.request.DictionaryDefinitionRequestModelToDictionaryDefinitionConverter;
 import com.michal.mqtt.api.converter.request.DictionaryValueModelToDictionaryValuesConverter;
 import com.michal.mqtt.api.converter.request.NodeRequestToBreokerNodeConverter;
 import com.michal.mqtt.api.converter.request.RoomRequestModelToRoomConverter;
+import com.michal.mqtt.api.converter.response.ActionToActionResponseConverter;
 import com.michal.mqtt.api.converter.response.BrokerToClientModelConverter;
 import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseConverter;
 import com.michal.mqtt.api.converter.response.NodeToNodeResponseConverter;
@@ -22,6 +25,7 @@ import com.michal.mqtt.api.converter.response.RecivedMessageToRecivedMessageResp
 import com.michal.mqtt.api.converter.response.RoomToRoomDetailsResponseConverter;
 import com.michal.mqtt.api.converter.response.SendMessageToSendMessageResponseConverter;
 import com.michal.mqtt.api.converter.response.SensorDataModelConverter;
+import com.michal.mqtt.api.groovyrule.ActionApi;
 import com.michal.mqtt.api.mqtt.MessageApi;
 import com.michal.mqtt.api.homestructure.RoomsApi;
 import com.michal.mqtt.api.mqtt.SensorDataApi;
@@ -96,5 +100,11 @@ public class ApiConfigurtaion {
     @Bean
     public NodesApi nodesApi(NodeDao nodeDao, NodeToNodeResponseConverter nodeToNodeResponseConverter, NodeRequestToBreokerNodeConverter nodeRequestToBreokerNodeConverter) {
         return new NodesApi(nodeDao, nodeToNodeResponseConverter, nodeRequestToBreokerNodeConverter);
+    }
+
+    @Bean
+    public ActionApi actionApi(ActionDao actionDao, ActionToActionResponseConverter actionToActionResponseConverter, ActionRequestToActionConverter
+            actionRequestToActionConverter) {
+        return new ActionApi(actionDao, actionToActionResponseConverter, actionRequestToActionConverter);
     }
 }

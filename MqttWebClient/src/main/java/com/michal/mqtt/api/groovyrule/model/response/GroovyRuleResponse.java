@@ -14,7 +14,7 @@ public class GroovyRuleResponse implements Serializable{
     private String description;
     private String message;
     private GroovyRule.VariableType type;
-    private List<GroovyRule.ActionType> actions;
+    private List<ActionResponse> actions;
     private String sensorName;
     private Long sensorId;
 
@@ -61,14 +61,6 @@ public class GroovyRuleResponse implements Serializable{
         this.type = type;
     }
 
-    public List<GroovyRule.ActionType> getActions() {
-        return actions;
-    }
-
-    public void setActions(List<GroovyRule.ActionType> actions) {
-        this.actions = actions;
-    }
-
     public String getSensorName() {
         return sensorName;
     }
@@ -83,5 +75,13 @@ public class GroovyRuleResponse implements Serializable{
 
     public void setSensorId(Long sensorId) {
         this.sensorId = sensorId;
+    }
+
+    public List<ActionResponse> getActions() {
+        return actions;
+    }
+
+    public void setActions(List<ActionResponse> actions) {
+        this.actions = actions;
     }
 }

@@ -5,11 +5,14 @@ import com.michal.dao.api.SensorDao;
 import com.michal.dao.model.dictionary.DictionaryDefinition;
 import com.michal.dao.model.dictionary.DictionaryValues;
 import com.michal.dao.model.networkstructure.Sensor;
+import com.michal.dao.model.rule.Action;
 import com.michal.dao.model.rule.GroovyRule;
 import com.michal.mqtt.engine.notifications.NotificationActionFactory;
 import com.michal.mqtt.engine.rulesengine.GroovyRuleEngine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,7 +36,7 @@ public class RecivedMessageExtractor {
     private String topic;
     private String message;
     private Sensor sensor;
-    private Map<GroovyRule.ActionType, String> trueRules;
+    private List<Action> actions;
 
     public RecivedMessageExtractor message(String message) {
         this.message = message;
@@ -52,18 +55,17 @@ public class RecivedMessageExtractor {
     }
 
     public RecivedMessageExtractor checkRules() {
-        trueRules = new HashMap<>();
+        actions = new ArrayList<>();
         this.sensor.getRules().forEach(groovyRule -> {
             if (groovyRuleEngine.evaluate(groovyRule.getRule(), groovyRuleEngine.getVariables(groovyRule, this.message))) {
-                groovyRule.getActions().forEach(actionType -> trueRules.put(actionType, groovyRule.getMessage()));
+                groovyRule.getActions().forEach(action -> actions.add(action));
             }
         });
         return this;
     }
 
     public RecivedMessageExtractor executeNotificationActions() {
-        trueRules.entrySet().forEach(actionTypeStringEntry -> notificationActionFactory.getAction(actionTypeStringEntry.getKey()).sendNotification(actionTypeStringEntry.getValue
-                ()));
+        actions.forEach(action -> notificationActionFactory.getAction(action.getType()).sendNotification(action, this.message, this.topic));
         return this;
     }
 

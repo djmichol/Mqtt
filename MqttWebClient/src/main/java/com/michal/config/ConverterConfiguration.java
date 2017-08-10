@@ -1,9 +1,11 @@
 package com.michal.config;
 
+import com.michal.dao.api.ActionDao;
 import com.michal.dao.api.BrokerDao;
 import com.michal.dao.api.DictionaryDefinitionDao;
 import com.michal.dao.api.NodeDao;
 import com.michal.dao.api.SensorDao;
+import com.michal.mqtt.api.converter.request.ActionRequestToActionConverter;
 import com.michal.mqtt.api.converter.request.BrokerModelToBrokerConverter;
 import com.michal.mqtt.api.converter.request.DictionaryDefinitionRequestModelToDictionaryDefinitionConverter;
 import com.michal.mqtt.api.converter.request.DictionaryValueModelToDictionaryValuesConverter;
@@ -11,6 +13,7 @@ import com.michal.mqtt.api.converter.request.GroovyRuleRequestToGroovyRuleConver
 import com.michal.mqtt.api.converter.request.NodeRequestToBreokerNodeConverter;
 import com.michal.mqtt.api.converter.request.RoomRequestModelToRoomConverter;
 import com.michal.mqtt.api.converter.request.SensorRequestToNodeSensorConverter;
+import com.michal.mqtt.api.converter.response.ActionToActionResponseConverter;
 import com.michal.mqtt.api.converter.response.BrokerToClientModelConverter;
 import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseConverter;
 import com.michal.mqtt.api.converter.response.GroovyRuleToGroovyRuleResponseConverter;
@@ -115,12 +118,22 @@ public class ConverterConfiguration {
     }
 
     @Bean
-    public GroovyRuleToGroovyRuleResponseConverter groovyRuleToGroovyRuleResponseConverter(){
-        return new GroovyRuleToGroovyRuleResponseConverter();
+    public GroovyRuleToGroovyRuleResponseConverter groovyRuleToGroovyRuleResponseConverter(ActionToActionResponseConverter actionToActionResponseConverter){
+        return new GroovyRuleToGroovyRuleResponseConverter(actionToActionResponseConverter);
     }
 
     @Bean
-    public GroovyRuleRequestToGroovyRuleConverter groovyRuleRequestToGroovyRuleConverter(SensorDao sensorDao){
-        return new GroovyRuleRequestToGroovyRuleConverter(sensorDao);
+    public GroovyRuleRequestToGroovyRuleConverter groovyRuleRequestToGroovyRuleConverter(SensorDao sensorDao, ActionDao actionDao){
+        return new GroovyRuleRequestToGroovyRuleConverter(sensorDao, actionDao);
+    }
+
+    @Bean
+    public ActionToActionResponseConverter actionToActionResponseConverter(){
+        return new ActionToActionResponseConverter();
+    }
+
+    @Bean
+    public ActionRequestToActionConverter actionRequestToActionConverter(){
+        return new ActionRequestToActionConverter();
     }
 }
