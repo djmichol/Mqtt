@@ -1,17 +1,11 @@
 package com.michal.mqtt.api.groovyrule;
 
 import com.michal.dao.api.ActionDao;
-import com.michal.dao.api.GroovyRuleDao;
 import com.michal.dao.model.rule.Action;
-import com.michal.dao.model.rule.GroovyRule;
 import com.michal.mqtt.api.converter.request.ActionRequestToActionConverter;
-import com.michal.mqtt.api.converter.request.GroovyRuleRequestToGroovyRuleConverter;
 import com.michal.mqtt.api.converter.response.ActionToActionResponseConverter;
-import com.michal.mqtt.api.converter.response.GroovyRuleToGroovyRuleResponseConverter;
 import com.michal.mqtt.api.groovyrule.model.request.ActionRequest;
-import com.michal.mqtt.api.groovyrule.model.request.GroovyRulRequest;
 import com.michal.mqtt.api.groovyrule.model.response.ActionResponse;
-import com.michal.mqtt.api.groovyrule.model.response.GroovyRuleResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;

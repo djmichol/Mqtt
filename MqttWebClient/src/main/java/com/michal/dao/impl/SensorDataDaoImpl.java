@@ -27,7 +27,7 @@ public class SensorDataDaoImpl implements SensorDataDao {
     @Override
     @Transactional
     public List<SensorData> getAllData() {
-        return entityManager.createQuery("from SensorData").getResultList();
+        return entityManager.createQuery("Select data from SensorData data").getResultList();
     }
 
     @Override

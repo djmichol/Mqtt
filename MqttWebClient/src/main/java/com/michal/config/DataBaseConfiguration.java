@@ -29,6 +29,7 @@ public class DataBaseConfiguration {
     @Qualifier("dataSourceMqtt")
     private DataSource dataSource;
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     @Qualifier("entityManagerFactoryMqtt")
     private LocalContainerEntityManagerFactoryBean entityManagerFactory;

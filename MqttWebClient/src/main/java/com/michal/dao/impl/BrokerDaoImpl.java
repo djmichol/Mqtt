@@ -26,7 +26,7 @@ public class BrokerDaoImpl implements BrokerDao{
 	@Transactional
 	@SuppressWarnings("unchecked")
 	public List<Broker> getAllBrokers() {
-		return entityManager.createQuery("from Broker").getResultList();
+		return entityManager.createQuery("Select broker from Broker broker").getResultList();
 	}
 
 	@Transactional

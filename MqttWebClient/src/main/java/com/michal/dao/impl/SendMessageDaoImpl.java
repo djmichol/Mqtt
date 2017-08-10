@@ -23,7 +23,7 @@ public class SendMessageDaoImpl implements SendMessageDao {
     @Transactional
     @Override
     public List<SendMessage> getAll() {
-        return entityManager.createQuery("from SendMessage").getResultList();
+        return entityManager.createQuery("Select message from SendMessage message").getResultList();
     }
 
 }

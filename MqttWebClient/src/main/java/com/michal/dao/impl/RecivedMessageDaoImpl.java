@@ -23,6 +23,6 @@ public class RecivedMessageDaoImpl implements RecivedMessageDao{
     @Transactional
     @Override
     public List<RecivedMessage> getAll() {
-        return entityManager.createQuery("from RecivedMessage").getResultList();
+        return entityManager.createQuery("Select message from RecivedMessage message").getResultList();
     }
 }

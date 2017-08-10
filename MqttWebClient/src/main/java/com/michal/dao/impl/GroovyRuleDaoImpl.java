@@ -24,7 +24,7 @@ public class GroovyRuleDaoImpl implements GroovyRuleDao {
     @Transactional
     @Override
     public List<GroovyRule> getAllNodes() {
-        return entityManager.createQuery("from GroovyRule").getResultList();
+        return entityManager.createQuery("Select rule from GroovyRule rule").getResultList();
     }
 
     @Transactional

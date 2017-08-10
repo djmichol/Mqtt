@@ -23,7 +23,7 @@ public class ActionDaoImpl implements ActionDao{
     @Transactional
     @Override
     public List<Action> getAll() {
-        return entityManager.createQuery("from Action").getResultList();
+        return entityManager.createQuery("Select action from Action action").getResultList();
     }
 
     @Transactional

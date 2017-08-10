@@ -28,7 +28,7 @@ public class EmailAction implements NotificationAction{
             email.setHostName(env.getProperty("email.host"));
             email.setSmtpPort(new Integer(env.getProperty("email.port")));
             email.setAuthenticator(new DefaultAuthenticator((env.getProperty("email.user")), (env.getProperty("email.password"))));
-            email.setSSL(true);
+            email.setSSLOnConnect(true);
             email.setFrom(env.getProperty("email.user"));
             email.setSubject(action.getSubject()+" "+topic);
             //TODO add message extractor

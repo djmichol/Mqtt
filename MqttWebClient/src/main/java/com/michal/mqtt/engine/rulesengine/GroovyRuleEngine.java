@@ -21,7 +21,7 @@ public class GroovyRuleEngine {
         if(groovyRule.getType().equals(GroovyRule.VariableType.NUMBER)){
             var = new Integer(data);
         }else if(groovyRule.getType().equals(GroovyRule.VariableType.BOOLEAN)){
-            var = new Boolean(data);
+            var = Boolean.valueOf(data);
         }else{
             var = data;
         }
@@ -30,7 +30,7 @@ public class GroovyRuleEngine {
 
     public boolean evaluate(String script, Map<String, Object> variables){
         Binding binding = new Binding();
-        variables.entrySet().forEach(stringObjectEntry -> binding.setVariable(stringObjectEntry.getKey(), stringObjectEntry.getValue()));
+        variables.forEach((key, value) -> binding.setVariable(key, value));
         GroovyShell groovyShell = new GroovyShell(binding);
         Object result = groovyShell.evaluate(script);
         return (boolean) result;

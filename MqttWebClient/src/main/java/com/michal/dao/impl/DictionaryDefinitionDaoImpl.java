@@ -33,6 +33,6 @@ public class DictionaryDefinitionDaoImpl implements DictionaryDefinitionDao{
 
     @Override
     public List<DictionaryDefinition> getAllDefinitions() {
-        return entityManager.createQuery("from DictionaryDefinition").getResultList();
+        return entityManager.createQuery("Select d from DictionaryDefinition d").getResultList();
     }
 }

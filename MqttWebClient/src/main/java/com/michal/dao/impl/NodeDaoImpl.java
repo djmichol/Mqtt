@@ -24,7 +24,7 @@ public class NodeDaoImpl implements NodeDao {
     @Transactional
     @Override
     public List<Node> getAllNodes() {
-        return entityManager.createQuery("from Node").getResultList();
+        return entityManager.createQuery("Select node from Node node").getResultList();
     }
 
     @Transactional

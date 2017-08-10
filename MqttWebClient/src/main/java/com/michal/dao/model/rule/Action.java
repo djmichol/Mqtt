@@ -1,7 +1,5 @@
 package com.michal.dao.model.rule;
 
-import com.michal.dao.model.networkstructure.Sensor;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Set;
@@ -90,6 +87,6 @@ public class Action implements Serializable {
     }
 
     public enum ActionType {
-        MAIL, SMS;
+        MAIL, SMS
     }
 }

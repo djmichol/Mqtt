@@ -6,14 +6,11 @@ import com.michal.dao.model.dictionary.DictionaryDefinition;
 import com.michal.dao.model.dictionary.DictionaryValues;
 import com.michal.dao.model.networkstructure.Sensor;
 import com.michal.dao.model.rule.Action;
-import com.michal.dao.model.rule.GroovyRule;
 import com.michal.mqtt.engine.notifications.NotificationActionFactory;
 import com.michal.mqtt.engine.rulesengine.GroovyRuleEngine;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RecivedMessageExtractor {
@@ -58,7 +55,7 @@ public class RecivedMessageExtractor {
         actions = new ArrayList<>();
         this.sensor.getRules().forEach(groovyRule -> {
             if (groovyRuleEngine.evaluate(groovyRule.getRule(), groovyRuleEngine.getVariables(groovyRule, this.message))) {
-                groovyRule.getActions().forEach(action -> actions.add(action));
+                actions.addAll(groovyRule.getActions());
             }
         });
         return this;

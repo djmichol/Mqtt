@@ -24,7 +24,7 @@ public class RoomDaoImpl implements RoomDao {
     @Override
     @Transactional
     public List<Room> getAllRoom() {
-        return entityManager.createQuery("from Room ").getResultList();
+        return entityManager.createQuery("Select room from Room room").getResultList();
     }
 
     @Override

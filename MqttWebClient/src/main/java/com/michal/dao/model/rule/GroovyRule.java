@@ -93,7 +93,7 @@ public class GroovyRule implements Serializable {
     }
 
     public enum VariableType {
-        NUMBER, BOOLEAN, STRING;
+        NUMBER, BOOLEAN, STRING
     }
 
 
