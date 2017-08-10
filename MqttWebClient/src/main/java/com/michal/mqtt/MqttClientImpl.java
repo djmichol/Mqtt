@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.michal.dao.api.BrokerDao;
-import com.michal.dao.api.RecivedMessageDao;
+import com.michal.dao.api.ReceivedMessageDao;
 import com.michal.dao.api.SendMessageDao;
 import com.michal.dao.model.mqttdata.SendMessage;
 import com.michal.mqtt.engine.client.DataBaseCallback;
-import com.michal.mqtt.engine.client.RecivedMessageExtractor;
+import com.michal.mqtt.engine.client.ReceivedMessageExtractor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -21,24 +21,22 @@ import com.michal.dao.model.networkstructure.Broker;
 
 public class MqttClientImpl implements Serializable {
 
-    private static final long serialVersionUID = 7190209816225844141L;
-
     final Logger logger = LogManager.getLogger(MqttClientImpl.class);
 
     private SendMessageDao sendMessageDao;
-    private RecivedMessageDao recivedMessageDao;
-    private RecivedMessageExtractor recivedMessageExtractor;
+    private ReceivedMessageDao receivedMessageDao;
+    private ReceivedMessageExtractor receivedMessageExtractor;
     private BrokerDao brokerDao;
     private MqttClient client;
     private MqttConnectOptions connectionOptions;
     private Broker broker;
 
-    public MqttClientImpl(Broker broker, String clientId, SendMessageDao sendMessageDao, RecivedMessageDao recivedMessageDao, RecivedMessageExtractor recivedMessageExtractor,
+    public MqttClientImpl(Broker broker, String clientId, SendMessageDao sendMessageDao, ReceivedMessageDao receivedMessageDao, ReceivedMessageExtractor receivedMessageExtractor,
                           BrokerDao brokerDao) throws MqttException {
         this.broker = broker;
         this.sendMessageDao = sendMessageDao;
-        this.recivedMessageDao = recivedMessageDao;
-        this.recivedMessageExtractor = recivedMessageExtractor;
+        this.receivedMessageDao = receivedMessageDao;
+        this.receivedMessageExtractor = receivedMessageExtractor;
         this.brokerDao = brokerDao;
         client = new MqttClient(broker.getUrl(), clientId, new MemoryPersistence());
         initConnectionOptions(broker);
@@ -55,7 +53,7 @@ public class MqttClientImpl implements Serializable {
     public boolean connect() throws MqttException {
         logger.info("mqtt-client connecting to broker: " + client.getServerURI());
         client.connect(connectionOptions);
-        client.setCallback(new DataBaseCallback(this, recivedMessageDao, brokerDao, recivedMessageExtractor));
+        client.setCallback(new DataBaseCallback(this, receivedMessageDao, brokerDao, receivedMessageExtractor));
         brokerDao.updateStatus(broker.getId(), new Date(), "connected");
         logger.info("mqtt-client connected");
         subscribeAllTopics();

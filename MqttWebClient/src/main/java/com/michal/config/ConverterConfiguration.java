@@ -19,7 +19,7 @@ import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseConv
 import com.michal.mqtt.api.converter.response.GroovyRuleToGroovyRuleResponseConverter;
 import com.michal.mqtt.api.converter.response.MqttClientToClientModelConverter;
 import com.michal.mqtt.api.converter.response.NodeToNodeResponseConverter;
-import com.michal.mqtt.api.converter.response.RecivedMessageToRecivedMessageResponseConverter;
+import com.michal.mqtt.api.converter.response.ReceivedMessageToReceivedMessageResponseConverter;
 import com.michal.mqtt.api.converter.response.RoomToRoomDetailsResponseConverter;
 import com.michal.mqtt.api.converter.response.RoomToRoomResponseConverter;
 import com.michal.mqtt.api.converter.response.SendMessageToSendMessageResponseConverter;
@@ -108,8 +108,8 @@ public class ConverterConfiguration {
     }
 
     @Bean
-    public RecivedMessageToRecivedMessageResponseConverter recivedMessageToRecivedMessageResponseConverter(){
-        return new RecivedMessageToRecivedMessageResponseConverter();
+    public ReceivedMessageToReceivedMessageResponseConverter recivedMessageToRecivedMessageResponseConverter(){
+        return new ReceivedMessageToReceivedMessageResponseConverter();
     }
 
     @Bean

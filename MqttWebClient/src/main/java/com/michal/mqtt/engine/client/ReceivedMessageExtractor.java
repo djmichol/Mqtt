@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RecivedMessageExtractor {
+public class ReceivedMessageExtractor {
 
     private SensorDao sensorDao;
     private SensorDataListener sensorDataListener;
@@ -21,7 +21,7 @@ public class RecivedMessageExtractor {
     private GroovyRuleEngine groovyRuleEngine;
     private NotificationActionFactory notificationActionFactory;
 
-    public RecivedMessageExtractor(SensorDao sensorDao, SensorDataListener sensorDataListener, DictionaryDefinitionDao dictionaryDefinitionDao, GroovyRuleEngine
+    public ReceivedMessageExtractor(SensorDao sensorDao, SensorDataListener sensorDataListener, DictionaryDefinitionDao dictionaryDefinitionDao, GroovyRuleEngine
             groovyRuleEngine, NotificationActionFactory notificationActionFactory) {
         this.sensorDao = sensorDao;
         this.sensorDataListener = sensorDataListener;
@@ -35,23 +35,22 @@ public class RecivedMessageExtractor {
     private Sensor sensor;
     private List<Action> actions;
 
-    public RecivedMessageExtractor message(String message) {
+    public ReceivedMessageExtractor message(String message) {
         this.message = message;
         return this;
     }
 
-    public RecivedMessageExtractor topic(String topic) {
+    public ReceivedMessageExtractor topic(String topic) {
         this.topic = topic;
         return this;
     }
 
-    public RecivedMessageExtractor extractSensor() {
-        Sensor sensor = sensorDao.getByTopic(topic);
-        this.sensor = sensor;
+    public ReceivedMessageExtractor extractSensor() {
+        this.sensor = sensorDao.getByTopic(topic);
         return this;
     }
 
-    public RecivedMessageExtractor checkRules() {
+    public ReceivedMessageExtractor checkRules() {
         actions = new ArrayList<>();
         this.sensor.getRules().forEach(groovyRule -> {
             if (groovyRuleEngine.evaluate(groovyRule.getRule(), groovyRuleEngine.getVariables(groovyRule, this.message))) {
@@ -61,7 +60,7 @@ public class RecivedMessageExtractor {
         return this;
     }
 
-    public RecivedMessageExtractor executeNotificationActions() {
+    public ReceivedMessageExtractor executeNotificationActions() {
         actions.forEach(action -> notificationActionFactory.getAction(action.getType()).sendNotification(action, this.message, this.topic));
         return this;
     }

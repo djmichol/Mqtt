@@ -1,28 +1,28 @@
 package com.michal.dao.impl;
 
-import com.michal.dao.api.RecivedMessageDao;
-import com.michal.dao.model.mqttdata.RecivedMessage;
+import com.michal.dao.api.ReceivedMessageDao;
+import com.michal.dao.model.mqttdata.ReceivedMessage;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-public class RecivedMessageDaoImpl implements RecivedMessageDao{
+public class ReceivedMessageDaoImpl implements ReceivedMessageDao {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Transactional
     @Override
-    public RecivedMessage create(RecivedMessage recivedMessage) {
-        entityManager.persist(recivedMessage);
+    public ReceivedMessage create(ReceivedMessage receivedMessage) {
+        entityManager.persist(receivedMessage);
         entityManager.flush();
-        return recivedMessage;
+        return receivedMessage;
     }
 
     @Transactional
     @Override
-    public List<RecivedMessage> getAll() {
+    public List<ReceivedMessage> getAll() {
         return entityManager.createQuery("Select message from RecivedMessage message").getResultList();
     }
 }

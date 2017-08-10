@@ -59,9 +59,7 @@ public class SensorDaoImpl implements SensorDao {
     public void addRoomToSensor(Room room, Long id) {
         Sensor sensor = get(id);
         sensor.setRoom(room);
-        if (sensor != null) {
-            entityManager.merge(sensor);
-            entityManager.flush();
-        }
+        entityManager.merge(sensor);
+        entityManager.flush();
     }
 }

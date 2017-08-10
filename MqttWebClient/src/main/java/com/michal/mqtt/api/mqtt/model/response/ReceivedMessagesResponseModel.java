@@ -7,9 +7,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 @ApiModel(description = "Notification response model")
-public class RecivedMessagesResponseModel implements Serializable {
+public class ReceivedMessagesResponseModel implements Serializable {
 
-    public RecivedMessagesResponseModel() {
+    public ReceivedMessagesResponseModel() {
     }
 
     @ApiModelProperty(value = "message")

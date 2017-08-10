@@ -15,24 +15,24 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "recivedMessage")
-public class RecivedMessage implements Serializable{
+@Table(name = "receivedMessage")
+public class ReceivedMessage implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "recived_message_id")
+    @Column(name = "received_message_id")
     private Long id;
-    @Column(name = "recived_message_topic", nullable = false)
+    @Column(name = "received_message_topic", nullable = false)
     private String topic;
-    @Column(name = "recived_message_message", nullable = false)
+    @Column(name = "received_message_message", nullable = false)
     private String message;
-    @Column(name = "recived_message_timestamp", nullable = false)
+    @Column(name = "received_message_timestamp", nullable = false)
     private Date timestamp;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "send_message_broker", nullable = false)
+    @JoinColumn(name = "received_message_broker", nullable = false)
     private Broker broker;
 
-    public RecivedMessage() {
+    public ReceivedMessage() {
     }
 
     public Long getId() {

@@ -3,12 +3,13 @@ package com.michal.mqtt;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
-import com.michal.dao.api.RecivedMessageDao;
+import com.michal.dao.api.ReceivedMessageDao;
 import com.michal.dao.api.SendMessageDao;
-import com.michal.mqtt.engine.client.RecivedMessageExtractor;
+import com.michal.mqtt.engine.client.ReceivedMessageExtractor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -22,14 +23,14 @@ public class MqttApplication {
 
     private BrokerDao repository;
     private SendMessageDao sendMessageDao;
-    private RecivedMessageDao recivedMessageDao;
-    private RecivedMessageExtractor recivedMessageExtractor;
+    private ReceivedMessageDao receivedMessageDao;
+    private ReceivedMessageExtractor receivedMessageExtractor;
 
-    public MqttApplication(BrokerDao repository, SendMessageDao sendMessageDao, RecivedMessageDao recivedMessageDao, RecivedMessageExtractor recivedMessageExtractor) {
+    public MqttApplication(BrokerDao repository, SendMessageDao sendMessageDao, ReceivedMessageDao receivedMessageDao, ReceivedMessageExtractor receivedMessageExtractor) {
         this.repository = repository;
         this.sendMessageDao = sendMessageDao;
-        this.recivedMessageDao = recivedMessageDao;
-        this.recivedMessageExtractor = recivedMessageExtractor;
+        this.receivedMessageDao = receivedMessageDao;
+        this.receivedMessageExtractor = receivedMessageExtractor;
     }
 
     private List<MqttClientImpl> brokersClient;
@@ -44,16 +45,16 @@ public class MqttApplication {
 
     private void prepareBrokers(List<Broker> brokers) {
         brokersClient = new ArrayList<>();
-        for (Broker broker : brokers) {
+        brokers.forEach(broker -> {
             try {
-                MqttClientImpl mqttClient = new MqttClientImpl(broker, CLIENT_ID, sendMessageDao, recivedMessageDao, recivedMessageExtractor, repository);
+                MqttClientImpl mqttClient = new MqttClientImpl(broker, CLIENT_ID, sendMessageDao, receivedMessageDao, receivedMessageExtractor, repository);
                 tryToConnectToBroker(broker, mqttClient);
                 brokersClient.add(mqttClient);
             } catch (MqttException e) {
                 repository.updateStatus(broker.getId(), new Date(), "connection error: " + e.getMessage());
                 logger.error(e);
             }
-        }
+        });
     }
 
     private void tryToConnectToBroker(Broker broker, MqttClientImpl mqttClient) throws MqttException {
@@ -68,13 +69,8 @@ public class MqttApplication {
         return brokersClient;
     }
 
-    public MqttClientImpl getByBrokerId(Long id) {
+    public Optional<MqttClientImpl> getByBrokerId(Long id) {
         List<MqttClientImpl> brokers = getBrokers();
-        for (MqttClientImpl broker : brokers) {
-            if (broker.getBroker().getId().equals(id)) {
-                return broker;
-            }
-        }
-        return null;
+        return brokers.stream().filter(mqttClient -> mqttClient.getBroker().getId().equals(id)).findFirst();
     }
 }

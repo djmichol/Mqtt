@@ -16,11 +16,16 @@ public class SensorDataListener implements SensorMessageListener {
 
     @Override
     public void mesageRecived(Sensor sensor, String topic, String data) {
+        SensorData sensorData = getSensorData(sensor, data);
+        sensorDataDao.create(sensorData);
+    }
+
+    private SensorData getSensorData(Sensor sensor, String data) {
         SensorData sensorData = new SensorData();
         sensorData.setType(sensor.getType());
         sensorData.setData(data);
         sensorData.setSensor(sensor);
         sensorData.setTimestamp(new Date());
-        sensorDataDao.create(sensorData);
+        return sensorData;
     }
 }

@@ -5,7 +5,7 @@ import com.michal.dao.api.BrokerDao;
 import com.michal.dao.api.DictionaryDefinitionDao;
 import com.michal.dao.api.DictionaryValuesDao;
 import com.michal.dao.api.NodeDao;
-import com.michal.dao.api.RecivedMessageDao;
+import com.michal.dao.api.ReceivedMessageDao;
 import com.michal.dao.api.RoomDao;
 import com.michal.dao.api.SendMessageDao;
 import com.michal.dao.api.SensorDao;
@@ -21,7 +21,7 @@ import com.michal.mqtt.api.converter.response.ActionToActionResponseConverter;
 import com.michal.mqtt.api.converter.response.BrokerToClientModelConverter;
 import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseConverter;
 import com.michal.mqtt.api.converter.response.NodeToNodeResponseConverter;
-import com.michal.mqtt.api.converter.response.RecivedMessageToRecivedMessageResponseConverter;
+import com.michal.mqtt.api.converter.response.ReceivedMessageToReceivedMessageResponseConverter;
 import com.michal.mqtt.api.converter.response.RoomToRoomDetailsResponseConverter;
 import com.michal.mqtt.api.converter.response.SendMessageToSendMessageResponseConverter;
 import com.michal.mqtt.api.converter.response.SensorDataModelConverter;
@@ -34,7 +34,7 @@ import com.michal.mqtt.api.dictionary.DictionaryApi;
 import com.michal.mqtt.api.networkstructure.ClientsApi;
 import com.michal.mqtt.api.networkstructure.NodesApi;
 import com.michal.mqtt.api.utils.RestCallService;
-import com.michal.mqtt.engine.client.RecivedMessageExtractor;
+import com.michal.mqtt.engine.client.ReceivedMessageExtractor;
 import com.michal.mqtt.error.ExceptionController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,19 +42,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 
 @Configuration
-public class ApiConfigurtaion {
+public class ApiConfiguration {
 
     @Bean
     @Scope("singleton")
-    public MqttApplication mqttApplication(BrokerDao brokerRepo, SendMessageDao sendMessageDao, RecivedMessageDao recivedMessageDao, RecivedMessageExtractor
-            recivedMessageExtractor) {
-        return new MqttApplication(brokerRepo, sendMessageDao, recivedMessageDao, recivedMessageExtractor);
+    public MqttApplication mqttApplication(BrokerDao brokerRepo, SendMessageDao sendMessageDao, ReceivedMessageDao receivedMessageDao, ReceivedMessageExtractor receivedMessageExtractor) {
+        return new MqttApplication(brokerRepo, sendMessageDao, receivedMessageDao, receivedMessageExtractor);
     }
 
     @Bean
-    public MessageApi messageApi(MqttApplication mqttApplication, RecivedMessageDao recivedMessageDao, RecivedMessageToRecivedMessageResponseConverter
-            recivedMessageToRecivedMessageResponseConverter, SendMessageToSendMessageResponseConverter sendMessageToSendMessageResponseConverter, SendMessageDao sendMessageDao) {
-        return new MessageApi(mqttApplication, recivedMessageToRecivedMessageResponseConverter, sendMessageToSendMessageResponseConverter, recivedMessageDao, sendMessageDao);
+    public MessageApi messageApi(MqttApplication mqttApplication, ReceivedMessageDao receivedMessageDao, ReceivedMessageToReceivedMessageResponseConverter receivedMessageToReceivedMessageResponseConverter, SendMessageToSendMessageResponseConverter sendMessageToSendMessageResponseConverter, SendMessageDao sendMessageDao) {
+        return new MessageApi(mqttApplication, receivedMessageToReceivedMessageResponseConverter, sendMessageToSendMessageResponseConverter, receivedMessageDao, sendMessageDao);
     }
 
     @Bean
@@ -64,8 +62,8 @@ public class ApiConfigurtaion {
 
     @Bean
     public ClientsApi clientsApi(MqttApplication mqttApplication, BrokerDao brokerRepo, BrokerToClientModelConverter brokerToClientModelConverter, BrokerModelToBrokerConverter
-            brokerModelToBrokerConverter, SendMessageDao sendMessageDao, RecivedMessageDao recivedMessageDao, RecivedMessageExtractor recivedMessageExtractor) {
-        return new ClientsApi(mqttApplication, brokerRepo, brokerToClientModelConverter, brokerModelToBrokerConverter, sendMessageDao, recivedMessageDao, recivedMessageExtractor);
+            brokerModelToBrokerConverter, SendMessageDao sendMessageDao, ReceivedMessageDao receivedMessageDao, ReceivedMessageExtractor receivedMessageExtractor) {
+        return new ClientsApi(mqttApplication, brokerRepo, brokerToClientModelConverter, brokerModelToBrokerConverter, sendMessageDao, receivedMessageDao, receivedMessageExtractor);
     }
 
     @Bean

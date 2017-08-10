@@ -1,6 +1,6 @@
 package com.michal.dao.model.networkstructure;
 
-import com.michal.dao.model.mqttdata.RecivedMessage;
+import com.michal.dao.model.mqttdata.ReceivedMessage;
 import com.michal.dao.model.mqttdata.SendMessage;
 
 import java.io.Serializable;
@@ -50,7 +50,7 @@ public class Broker implements Serializable {
     private Set<Node> nodes = new HashSet<>(0);
 
     @OneToMany(mappedBy = "broker", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<RecivedMessage> recivedMessages = new HashSet<>(0);
+    private Set<ReceivedMessage> receivedMessages = new HashSet<>(0);
 
     @OneToMany(mappedBy = "broker", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<SendMessage> sendMessages = new HashSet<>(0);
@@ -122,12 +122,12 @@ public class Broker implements Serializable {
         this.nodes = nodes;
     }
 
-    public Set<RecivedMessage> getRecivedMessages() {
-        return recivedMessages;
+    public Set<ReceivedMessage> getReceivedMessages() {
+        return receivedMessages;
     }
 
-    public void setRecivedMessages(Set<RecivedMessage> recivedMessages) {
-        this.recivedMessages = recivedMessages;
+    public void setReceivedMessages(Set<ReceivedMessage> receivedMessages) {
+        this.receivedMessages = receivedMessages;
     }
 
     public Set<SendMessage> getSendMessages() {
