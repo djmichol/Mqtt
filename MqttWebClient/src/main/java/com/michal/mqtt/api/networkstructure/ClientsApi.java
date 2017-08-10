@@ -9,7 +9,7 @@ import com.michal.mqtt.api.converter.response.BrokerToClientModelConverter;
 import com.michal.mqtt.api.networkstructure.model.request.BrokerRequestModel;
 import com.michal.mqtt.api.networkstructure.model.response.ClientResponseModel;
 import com.michal.mqtt.api.utils.SimpleResponse;
-import com.michal.mqtt.callback.client.RecivedMessageExtractor;
+import com.michal.mqtt.engine.client.RecivedMessageExtractor;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

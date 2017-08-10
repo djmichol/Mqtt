@@ -3,6 +3,7 @@ package com.michal.config;
 import com.michal.dao.api.BrokerDao;
 import com.michal.dao.api.DictionaryDefinitionDao;
 import com.michal.dao.api.DictionaryValuesDao;
+import com.michal.dao.api.GroovyRuleDao;
 import com.michal.dao.api.NodeDao;
 import com.michal.dao.api.RecivedMessageDao;
 import com.michal.dao.api.RoomDao;
@@ -12,6 +13,7 @@ import com.michal.dao.api.SensorDataDao;
 import com.michal.dao.impl.BrokerDaoImpl;
 import com.michal.dao.impl.DictionaryDefinitionDaoImpl;
 import com.michal.dao.impl.DictionaryValueDaoImpl;
+import com.michal.dao.impl.GroovyRuleDaoImpl;
 import com.michal.dao.impl.NodeDaoImpl;
 import com.michal.dao.impl.RecivedMessageDaoImpl;
 import com.michal.dao.impl.RoomDaoImpl;
@@ -67,6 +69,11 @@ public class RepositoryConfig {
     @Bean
     public RecivedMessageDao recivedMessageDao(){
         return new RecivedMessageDaoImpl();
+    }
+
+    @Bean
+    public GroovyRuleDao groovyRuleDao(){
+        return new GroovyRuleDaoImpl();
     }
 
 }

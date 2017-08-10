@@ -7,11 +7,13 @@ import com.michal.dao.api.SensorDao;
 import com.michal.mqtt.api.converter.request.BrokerModelToBrokerConverter;
 import com.michal.mqtt.api.converter.request.DictionaryDefinitionRequestModelToDictionaryDefinitionConverter;
 import com.michal.mqtt.api.converter.request.DictionaryValueModelToDictionaryValuesConverter;
+import com.michal.mqtt.api.converter.request.GroovyRuleRequestToGroovyRuleConverter;
 import com.michal.mqtt.api.converter.request.NodeRequestToBreokerNodeConverter;
 import com.michal.mqtt.api.converter.request.RoomRequestModelToRoomConverter;
 import com.michal.mqtt.api.converter.request.SensorRequestToNodeSensorConverter;
 import com.michal.mqtt.api.converter.response.BrokerToClientModelConverter;
 import com.michal.mqtt.api.converter.response.DictionaryToDictionaryResponseConverter;
+import com.michal.mqtt.api.converter.response.GroovyRuleToGroovyRuleResponseConverter;
 import com.michal.mqtt.api.converter.response.MqttClientToClientModelConverter;
 import com.michal.mqtt.api.converter.response.NodeToNodeResponseConverter;
 import com.michal.mqtt.api.converter.response.RecivedMessageToRecivedMessageResponseConverter;
@@ -110,5 +112,15 @@ public class ConverterConfiguration {
     @Bean
     public SendMessageToSendMessageResponseConverter sendMessageToSendMessageResponseConverter(){
         return new SendMessageToSendMessageResponseConverter();
+    }
+
+    @Bean
+    public GroovyRuleToGroovyRuleResponseConverter groovyRuleToGroovyRuleResponseConverter(){
+        return new GroovyRuleToGroovyRuleResponseConverter();
+    }
+
+    @Bean
+    public GroovyRuleRequestToGroovyRuleConverter groovyRuleRequestToGroovyRuleConverter(SensorDao sensorDao){
+        return new GroovyRuleRequestToGroovyRuleConverter(sensorDao);
     }
 }

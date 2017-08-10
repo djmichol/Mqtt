@@ -30,7 +30,7 @@ import com.michal.mqtt.api.dictionary.DictionaryApi;
 import com.michal.mqtt.api.networkstructure.ClientsApi;
 import com.michal.mqtt.api.networkstructure.NodesApi;
 import com.michal.mqtt.api.utils.RestCallService;
-import com.michal.mqtt.callback.client.RecivedMessageExtractor;
+import com.michal.mqtt.engine.client.RecivedMessageExtractor;
 import com.michal.mqtt.error.ExceptionController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

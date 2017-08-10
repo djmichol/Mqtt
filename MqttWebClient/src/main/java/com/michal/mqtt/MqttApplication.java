@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 
 import com.michal.dao.api.RecivedMessageDao;
 import com.michal.dao.api.SendMessageDao;
-import com.michal.mqtt.callback.client.RecivedMessageExtractor;
+import com.michal.mqtt.engine.client.RecivedMessageExtractor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;

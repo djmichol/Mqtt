@@ -1,4 +1,4 @@
-package com.michal.mqtt.callback.client;
+package com.michal.mqtt.engine.client;
 
 import com.michal.dao.api.BrokerDao;
 import com.michal.dao.api.RecivedMessageDao;
@@ -30,7 +30,13 @@ public class DataBaseCallback extends MqttCallbackAbstract {
             recivedMessage.setTimestamp(new Date());
             recivedMessageDao.create(recivedMessage);
         }
-        recivedMessageExtractor.topic(topic).extractSensor().saveMessage(new String(message.getPayload(), "UTF-8"));
+        recivedMessageExtractor
+                .topic(topic)
+                .message(new String(message.getPayload(), "UTF-8"))
+                .extractSensor()
+                .checkRules()
+                .executeNotificationActions()
+                .saveMessage();
     }
 
     @Override

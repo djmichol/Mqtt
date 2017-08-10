@@ -2,6 +2,7 @@ package com.michal.dao.model.networkstructure;
 
 import com.michal.dao.model.homestructure.Room;
 import com.michal.dao.model.mqttdata.SensorData;
+import com.michal.dao.model.rule.GroovyRule;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,6 +50,9 @@ public class Sensor {
 
     @OneToMany(mappedBy = "sensor", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<SensorData> sensorData = new HashSet<>(0);
+
+    @OneToMany(mappedBy = "sensor", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private Set<GroovyRule> rules = new HashSet<>(0);
 
     public Sensor() {
     }
@@ -117,4 +121,11 @@ public class Sensor {
         this.topic = topic;
     }
 
+    public Set<GroovyRule> getRules() {
+        return rules;
+    }
+
+    public void setRules(Set<GroovyRule> rules) {
+        this.rules = rules;
+    }
 }

@@ -1,4 +1,4 @@
-package com.michal.mqtt.callback.client;
+package com.michal.mqtt.engine.client;
 
 import com.michal.dao.model.networkstructure.Sensor;
 

@@ -1,6 +1,6 @@
 package com.michal.config;
 
-import com.michal.mqtt.api.secure.interceptor.AuthInterceptor;
+import com.michal.mqtt.engine.interceptor.AuthInterceptor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

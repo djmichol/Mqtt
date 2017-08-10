@@ -1,4 +1,4 @@
-package com.michal.mqtt.api.secure.interceptor;
+package com.michal.mqtt.engine.interceptor;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
