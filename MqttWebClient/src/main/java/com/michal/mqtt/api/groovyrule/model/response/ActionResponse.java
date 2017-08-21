@@ -2,27 +2,19 @@ package com.michal.mqtt.api.groovyrule.model.response;
 
 import com.michal.dao.model.rule.Action;
 import io.swagger.annotations.ApiModel;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.io.Serializable;
 
 @ApiModel(description = "Rule action response model")
-public class ActionResponse implements Serializable {
+public class ActionResponse extends ResourceSupport implements Serializable {
 
-    private Long id;
     private Action.ActionType type;
     private String addressee;
     private String message;
     private String subject;
 
     public ActionResponse() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Action.ActionType getType() {

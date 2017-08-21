@@ -14,6 +14,7 @@ public class GroovyRuleToGroovyRuleResponseConverter extends Converter<GroovyRul
         this.actionToActionResponseConverter = actionToActionResponseConverter;
     }
 
+    //TODO add HATEOAS support
     @Override
     public GroovyRuleResponse convert(GroovyRule groovyRule) {
         if(groovyRule!=null){
