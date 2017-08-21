@@ -11,7 +11,6 @@ public class SensorToSensorResponseConverter extends Converter<Sensor, SensorRes
     public SensorResponseModel convert(Sensor sensor) {
         if (sensor != null) {
             SensorResponseModel sensorResponseModel = new SensorResponseModel();
-            sensorResponseModel.setId(sensor.getId());
             sensorResponseModel.setLastSeen(sensor.getLastSeen());
             sensorResponseModel.setName(sensor.getName());
             sensorResponseModel.setNodeId(sensor.getNode().getId());

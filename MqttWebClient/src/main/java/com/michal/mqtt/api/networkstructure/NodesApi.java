@@ -8,6 +8,7 @@ import com.michal.mqtt.api.networkstructure.model.request.NodeRequestModel;
 import com.michal.mqtt.api.networkstructure.model.response.NodeResponseModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,18 @@ public class NodesApi {
     public ResponseEntity<List<NodeResponseModel>> getAllNodes() {
         List<NodeResponseModel> nodeResponseModels = nodeToNodeResponseConverter.convert(nodeDao.getAllNodes());
         return new ResponseEntity<>(nodeResponseModels, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET , value = "/broker/{id}")
+    public ResponseEntity<List<NodeResponseModel>> getNodesByBrokerId(@PathVariable("id") Long brokerId) {
+        List<NodeResponseModel> nodeResponseModels = nodeToNodeResponseConverter.convert(nodeDao.getByBrokerId(brokerId));
+        return new ResponseEntity<>(nodeResponseModels, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    public ResponseEntity<NodeResponseModel> getNodeDetails(@PathVariable("id") Long nodeId) {
+        NodeResponseModel sensorResponseModel = nodeToNodeResponseConverter.convert(nodeDao.get(nodeId));
+        return new ResponseEntity<>(sensorResponseModel, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)

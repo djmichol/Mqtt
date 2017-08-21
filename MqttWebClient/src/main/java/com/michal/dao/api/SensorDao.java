@@ -11,6 +11,10 @@ public interface SensorDao {
 
     List<Sensor> getAllSensors();
 
+    List<Sensor> getByRoom(Long roomId);
+
+    List<Sensor> getByNode(Long nodeId);
+
     Sensor getByTopic(String topic);
 
     Sensor get(Long id);

@@ -3,14 +3,14 @@ package com.michal.mqtt.api.networkstructure.model.response;
 import com.michal.mqtt.api.homestructure.model.response.RoomResponseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.hateoas.ResourceSupport;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @ApiModel(description = "Sensor response model")
-public class SensorResponseModel {
+public class SensorResponseModel extends ResourceSupport implements Serializable {
 
-    @ApiModelProperty(value = "id")
-    private Long id;
     @ApiModelProperty(value = "name")
     private String name;
     @ApiModelProperty(value = "node id")
@@ -25,14 +25,6 @@ public class SensorResponseModel {
     private Date lastSeen;
     @ApiModelProperty(value = "topic")
     private String topic;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -56,14 +48,6 @@ public class SensorResponseModel {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public RoomResponseModel getRoom() {
-        return room;
-    }
-
-    public void setRoom(RoomResponseModel room) {
-        this.room = room;
     }
 
     public Date getLastSeen() {

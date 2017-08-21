@@ -2,12 +2,13 @@ package com.michal.mqtt.api.mqtt.model.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @ApiModel(description = "Sensor data")
-public class SensorDataResponseModel implements Serializable {
+public class SensorDataResponseModel extends ResourceSupport implements Serializable {
 
     public SensorDataResponseModel() {
     }
@@ -18,8 +19,6 @@ public class SensorDataResponseModel implements Serializable {
     private String sensorData;
     @ApiModelProperty(value = "timeStamp")
     private Date dataTimestamp;
-    @ApiModelProperty(value = "sensorId")
-    private Long sensorId;
 
     public String getDataType() {
         return dataType;
@@ -43,13 +42,5 @@ public class SensorDataResponseModel implements Serializable {
 
     public void setDataTimestamp(Date dataTimestamp) {
         this.dataTimestamp = dataTimestamp;
-    }
-
-    public Long getSensorId() {
-        return sensorId;
-    }
-
-    public void setSensorId(Long sensorId) {
-        this.sensorId = sensorId;
     }
 }

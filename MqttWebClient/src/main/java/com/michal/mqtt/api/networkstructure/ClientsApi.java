@@ -55,6 +55,12 @@ public class ClientsApi {
         return new ResponseEntity<>(brokers, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/{brokerId}")
+    public ResponseEntity<ClientResponseModel> getBrokerDetails(@PathVariable("brokerId") Long brokerId) {
+        ClientResponseModel broker = brokerToClientModelConverter.convert(brokerRepo.get(brokerId));
+        return new ResponseEntity<>(broker, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ClientResponseModel> addNewBroker(@Valid @RequestBody BrokerRequestModel brokerRequestModel) throws MqttException {
         Broker broker = brokerRepo.create(brokerModelToBrokerConverter.convert(brokerRequestModel));

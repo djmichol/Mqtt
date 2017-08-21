@@ -2,33 +2,39 @@ package com.michal.mqtt.api.converter.response;
 
 
 import com.michal.dao.model.networkstructure.Node;
-import com.michal.mqtt.api.converter.Converter;
+import com.michal.mqtt.api.converter.ResponseConverter;
+import com.michal.mqtt.api.networkstructure.ClientsApi;
+import com.michal.mqtt.api.networkstructure.NodesApi;
+import com.michal.mqtt.api.networkstructure.SensorsApi;
 import com.michal.mqtt.api.networkstructure.model.response.NodeResponseModel;
+import org.springframework.hateoas.Link;
 
-import java.util.stream.Collectors;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-public class NodeToNodeResponseConverter extends Converter<Node, NodeResponseModel> {
-
-    private SensorToSensorDetailsResponseConverter sensorToSensorResponseConverter;
-
-    public NodeToNodeResponseConverter(SensorToSensorDetailsResponseConverter sensorToSensorResponseConverter) {
-        this.sensorToSensorResponseConverter = sensorToSensorResponseConverter;
-    }
+public class NodeToNodeResponseConverter extends ResponseConverter<Node, NodeResponseModel> {
 
     @Override
     public NodeResponseModel convert(Node node) {
         if (node != null) {
             NodeResponseModel nodeResponseModel = new NodeResponseModel();
-            nodeResponseModel.setBrokerId(node.getBroker().getId());
-            nodeResponseModel.setBrokerName(node.getBroker().getName());
-            nodeResponseModel.setId(node.getId());
             nodeResponseModel.setLastSeen(node.getLastSeen());
             nodeResponseModel.setName(node.getName());
             nodeResponseModel.setStatus(node.getStatus());
             nodeResponseModel.setUrl(node.getUrl());
-            nodeResponseModel.setSensors(sensorToSensorResponseConverter.convert(node.getSensors().stream().collect(Collectors.toList())));
+            prepareLinks(node, nodeResponseModel);
             return nodeResponseModel;
         }
         return null;
+    }
+
+    @Override
+    protected void prepareLinks(Node node, NodeResponseModel nodeResponseModel) {
+        Link sensors = linkTo(methodOn(SensorsApi.class).getSensorInNode(node.getId())).withRel("node.sensors");
+        Link broker = linkTo(methodOn(ClientsApi.class).getBrokerDetails(node.getBroker().getId())).withRel("node.broker");
+        Link detail = linkTo(methodOn(NodesApi.class).getNodeDetails(node.getId())).withSelfRel();
+        nodeResponseModel.add(detail);
+        nodeResponseModel.add(sensors);
+        nodeResponseModel.add(broker);
     }
 }

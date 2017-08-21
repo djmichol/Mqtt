@@ -8,6 +8,7 @@ import com.michal.mqtt.api.groovyrule.model.request.ActionRequest;
 import com.michal.mqtt.api.groovyrule.model.response.ActionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,12 @@ public class ActionApi {
     public ResponseEntity<List<ActionResponse>> getAllRules() {
         List<ActionResponse> groovyRuleResponses = actionToActionResponseConverter.convert(actionDao.getAll());
         return new ResponseEntity<>(groovyRuleResponses, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    public ResponseEntity<ActionResponse> getActionDetails(@PathVariable("id") Long actionId) {
+        ActionResponse actionResponse = actionToActionResponseConverter.convert(actionDao.get(actionId));
+        return new ResponseEntity<>(actionResponse, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)

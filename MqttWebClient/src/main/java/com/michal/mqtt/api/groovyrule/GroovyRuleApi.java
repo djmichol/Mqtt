@@ -5,9 +5,11 @@ import com.michal.dao.model.rule.GroovyRule;
 import com.michal.mqtt.api.converter.request.GroovyRuleRequestToGroovyRuleConverter;
 import com.michal.mqtt.api.converter.response.GroovyRuleToGroovyRuleResponseConverter;
 import com.michal.mqtt.api.groovyrule.model.request.GroovyRulRequest;
+import com.michal.mqtt.api.groovyrule.model.response.ActionResponse;
 import com.michal.mqtt.api.groovyrule.model.response.GroovyRuleResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,8 +40,14 @@ public class GroovyRuleApi {
         return new ResponseEntity<>(groovyRuleResponses, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    public ResponseEntity<GroovyRuleResponse> getRuleDetails(@PathVariable("id") Long ruleId) {
+        GroovyRuleResponse groovyRuleResponse = groovyRuleToGroovyRuleResponseConverter.convert(groovyRuleDao.get(ruleId));
+        return new ResponseEntity<>(groovyRuleResponse, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<GroovyRuleResponse> addNewNode(@Valid @RequestBody GroovyRulRequest groovyRulRequest) {
+    public ResponseEntity<GroovyRuleResponse> addNewRule(@Valid @RequestBody GroovyRulRequest groovyRulRequest) {
         GroovyRule groovyRule = groovyRuleDao.create(groovyRuleRequestToGroovyRuleConverter.convert(groovyRulRequest));
         return new ResponseEntity<>(groovyRuleToGroovyRuleResponseConverter.convert(groovyRule), HttpStatus.OK);
     }

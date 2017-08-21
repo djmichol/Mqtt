@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 
@@ -25,6 +26,14 @@ public class NodeDaoImpl implements NodeDao {
     @Override
     public List<Node> getAllNodes() {
         return entityManager.createQuery("Select node from Node node").getResultList();
+    }
+
+    @Transactional
+    @Override
+    public List<Node> getByBrokerId(Long brokerId) {
+        Query query = entityManager.createQuery("Select data from Node data where data.broker.id = :brokerId", Node.class);
+        query.setParameter("brokerId", brokerId);
+        return query.getResultList();
     }
 
     @Transactional

@@ -8,6 +8,7 @@ public interface NodeDao {
 
     Node create(Node node);
     List<Node> getAllNodes();
+    List<Node> getByBrokerId(Long brokerId);
     Node get(Long id);
     boolean remove(Long id);
 }

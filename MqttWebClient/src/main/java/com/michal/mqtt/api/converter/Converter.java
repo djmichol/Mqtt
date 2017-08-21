@@ -8,4 +8,5 @@ public abstract class Converter<IN,OUT>  implements org.springframework.core.con
     public List<OUT> convert(List<IN> inList){
         return inList.stream().map(this::convert).collect(Collectors.toList());
     }
+
 }

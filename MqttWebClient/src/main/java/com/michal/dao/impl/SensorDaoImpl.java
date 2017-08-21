@@ -28,6 +28,20 @@ public class SensorDaoImpl implements SensorDao {
         return entityManager.createQuery("Select sensor from Sensor sensor").getResultList();
     }
 
+    @Override
+    public List<Sensor> getByRoom(Long roomId) {
+        Query query = entityManager.createQuery("Select data from Sensor data where data.room.id = :roomId", Sensor.class);
+        query.setParameter("roomId", roomId);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Sensor> getByNode(Long nodeId) {
+        Query query = entityManager.createQuery("Select data from Sensor data where data.node.id = :nodeId", Sensor.class);
+        query.setParameter("nodeId", nodeId);
+        return query.getResultList();
+    }
+
     @Transactional
     @Override
     public Sensor getByTopic(String topic) {

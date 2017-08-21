@@ -38,8 +38,8 @@ public class ConverterConfiguration {
     }
 
     @Bean
-    public SensorToSensorDetailsResponseConverter sensorToSensorDetailsResponseConverter(RoomToRoomResponseConverter roomToRoomResponseConverter) {
-        return new SensorToSensorDetailsResponseConverter(roomToRoomResponseConverter);
+    public SensorToSensorDetailsResponseConverter sensorToSensorDetailsResponseConverter() {
+        return new SensorToSensorDetailsResponseConverter();
     }
 
     @Bean
@@ -48,13 +48,13 @@ public class ConverterConfiguration {
     }
 
     @Bean
-    public NodeToNodeResponseConverter brokerNodeToNodeResponseConverter(SensorToSensorDetailsResponseConverter sensorToSensorResponseConverter) {
-        return new NodeToNodeResponseConverter(sensorToSensorResponseConverter);
+    public NodeToNodeResponseConverter brokerNodeToNodeResponseConverter() {
+        return new NodeToNodeResponseConverter();
     }
 
     @Bean
-    public MqttClientToClientModelConverter mqttClientToClientModelConverter(NodeToNodeResponseConverter nodeToNodeResponseConverter) {
-        return new MqttClientToClientModelConverter(nodeToNodeResponseConverter);
+    public MqttClientToClientModelConverter mqttClientToClientModelConverter() {
+        return new MqttClientToClientModelConverter();
     }
 
     @Bean
@@ -103,8 +103,8 @@ public class ConverterConfiguration {
     }
 
     @Bean
-    public RoomToRoomDetailsResponseConverter roomToRoomDetailsResponseConverter(SensorToSensorResponseConverter sensorToSensorResponseConverter){
-        return new RoomToRoomDetailsResponseConverter(sensorToSensorResponseConverter);
+    public RoomToRoomDetailsResponseConverter roomToRoomDetailsResponseConverter(){
+        return new RoomToRoomDetailsResponseConverter();
     }
 
     @Bean
