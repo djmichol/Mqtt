@@ -33,8 +33,14 @@ public class ActionApi {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ActionResponse>> getAllRules() {
+    public ResponseEntity<List<ActionResponse>> getAllActions() {
         List<ActionResponse> groovyRuleResponses = actionToActionResponseConverter.convert(actionDao.getAll());
+        return new ResponseEntity<>(groovyRuleResponses, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/rule/{id}")
+    public ResponseEntity<List<ActionResponse>> getRuleActions(@PathVariable("id") Long ruleId) {
+        List<ActionResponse> groovyRuleResponses = actionToActionResponseConverter.convert(actionDao.getForRule(ruleId));
         return new ResponseEntity<>(groovyRuleResponses, HttpStatus.OK);
     }
 

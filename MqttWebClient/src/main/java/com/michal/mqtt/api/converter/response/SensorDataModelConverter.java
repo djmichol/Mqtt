@@ -23,7 +23,9 @@ public class SensorDataModelConverter extends ResponseConverter<SensorData, Sens
 
     @Override
     protected void prepareLinks(SensorData sensorData, SensorDataResponseModel sensorDataModel) {
-        Link sensor = linkTo(methodOn(SensorsApi.class).getSensorDetails(sensorData.getSensor().getId())).withRel("sensorData.sensor");
-        sensorDataModel.add(sensor);
+        if (sensorData.getSensor() != null) {
+            Link sensor = linkTo(methodOn(SensorsApi.class).getSensorDetails(sensorData.getSensor().getId())).withRel("sensorData.sensor");
+            sensorDataModel.add(sensor);
+        }
     }
 }

@@ -2,31 +2,20 @@ package com.michal.mqtt.api.groovyrule.model.response;
 
 import com.michal.dao.model.rule.GroovyRule;
 import io.swagger.annotations.ApiModel;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.io.Serializable;
 import java.util.List;
 
 @ApiModel(description = "Groovy rule response model")
-public class GroovyRuleResponse implements Serializable{
+public class GroovyRuleResponse extends ResourceSupport {
 
-    private Long id;
     private String rule;
     private String description;
     private String message;
     private GroovyRule.VariableType type;
-    private List<ActionResponse> actions;
-    private String sensorName;
-    private Long sensorId;
 
     public GroovyRuleResponse() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getRule() {
@@ -59,29 +48,5 @@ public class GroovyRuleResponse implements Serializable{
 
     public void setType(GroovyRule.VariableType type) {
         this.type = type;
-    }
-
-    public String getSensorName() {
-        return sensorName;
-    }
-
-    public void setSensorName(String sensorName) {
-        this.sensorName = sensorName;
-    }
-
-    public Long getSensorId() {
-        return sensorId;
-    }
-
-    public void setSensorId(Long sensorId) {
-        this.sensorId = sensorId;
-    }
-
-    public List<ActionResponse> getActions() {
-        return actions;
-    }
-
-    public void setActions(List<ActionResponse> actions) {
-        this.actions = actions;
     }
 }

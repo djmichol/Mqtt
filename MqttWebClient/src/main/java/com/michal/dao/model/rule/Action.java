@@ -31,8 +31,7 @@ public class Action implements Serializable {
     private String message;
     @Column(name = "action_subject" , nullable = false)
     private String subject;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "actions", nullable = false)
+    @ManyToMany(mappedBy = "actions")
     private Set<GroovyRule> groovyRules;
 
     public Action() {

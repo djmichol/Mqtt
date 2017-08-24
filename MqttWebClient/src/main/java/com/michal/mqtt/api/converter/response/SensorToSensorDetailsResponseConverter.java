@@ -30,9 +30,12 @@ public class SensorToSensorDetailsResponseConverter extends ResponseConverter<Se
 
     @Override
     protected void prepareLinks(Sensor sensor, SensorResponseModel sensorResponseModel) {
-        Link room = linkTo(methodOn(RoomsApi.class).getRoomDetails(sensor.getRoom().getId())).withRel("sensor.room");
+        if (sensor.getRoom() != null) {
+            Link room = linkTo(methodOn(RoomsApi.class).getRoomDetails(sensor.getRoom().getId())).withRel("sensor.room");
+            sensorResponseModel.add(room);
+        }
         Link detail = linkTo(SensorsApi.class).slash(sensor.getId()).withSelfRel();
         sensorResponseModel.add(detail);
-        sensorResponseModel.add(room);
+
     }
 }

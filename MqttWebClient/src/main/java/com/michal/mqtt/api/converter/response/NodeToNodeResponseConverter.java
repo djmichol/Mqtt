@@ -31,10 +31,13 @@ public class NodeToNodeResponseConverter extends ResponseConverter<Node, NodeRes
     @Override
     protected void prepareLinks(Node node, NodeResponseModel nodeResponseModel) {
         Link sensors = linkTo(methodOn(SensorsApi.class).getSensorInNode(node.getId())).withRel("node.sensors");
-        Link broker = linkTo(methodOn(ClientsApi.class).getBrokerDetails(node.getBroker().getId())).withRel("node.broker");
+        if (node.getBroker() != null) {
+            Link broker = linkTo(methodOn(ClientsApi.class).getBrokerDetails(node.getBroker().getId())).withRel("node.broker");
+            nodeResponseModel.add(broker);
+        }
         Link detail = linkTo(methodOn(NodesApi.class).getNodeDetails(node.getId())).withSelfRel();
         nodeResponseModel.add(detail);
         nodeResponseModel.add(sensors);
-        nodeResponseModel.add(broker);
+
     }
 }

@@ -1,7 +1,6 @@
 package com.michal.mqtt.api.converter.response;
 
 import com.michal.dao.model.mqttdata.ReceivedMessage;
-import com.michal.mqtt.api.converter.Converter;
 import com.michal.mqtt.api.converter.ResponseConverter;
 import com.michal.mqtt.api.mqtt.model.response.ReceivedMessagesResponseModel;
 import com.michal.mqtt.api.networkstructure.ClientsApi;
@@ -13,7 +12,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class ReceivedMessageToReceivedMessageResponseConverter extends ResponseConverter<ReceivedMessage, ReceivedMessagesResponseModel> {
     @Override
     public ReceivedMessagesResponseModel convert(ReceivedMessage receivedMessage) {
-        if(receivedMessage !=null){
+        if (receivedMessage != null) {
             ReceivedMessagesResponseModel receivedMessagesResponseModel = new ReceivedMessagesResponseModel();
             receivedMessagesResponseModel.setDataTimestamp(receivedMessage.getTimestamp());
             receivedMessagesResponseModel.setMessage(receivedMessage.getMessage());
@@ -26,7 +25,9 @@ public class ReceivedMessageToReceivedMessageResponseConverter extends ResponseC
 
     @Override
     protected void prepareLinks(ReceivedMessage receivedMessage, ReceivedMessagesResponseModel receivedMessagesResponseModel) {
-        Link broker = linkTo(methodOn(ClientsApi.class).getBrokerDetails(receivedMessage.getBroker().getId())).withRel("receivedMessage.broker");
-        receivedMessagesResponseModel.add(broker);
+        if (receivedMessage.getBroker() != null) {
+            Link broker = linkTo(methodOn(ClientsApi.class).getBrokerDetails(receivedMessage.getBroker().getId())).withRel("receivedMessage.broker");
+            receivedMessagesResponseModel.add(broker);
+        }
     }
 }

@@ -8,6 +8,7 @@ public interface ActionDao {
 
     Action create(Action action);
     List<Action> getAll();
+    List<Action> getForRule(Long ruleId);
     Action get(Long id);
     boolean remove(Long id);
 }

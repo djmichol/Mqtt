@@ -5,8 +5,11 @@ import com.michal.dao.model.rule.Action;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ActionDaoImpl implements ActionDao{
 
@@ -24,6 +27,14 @@ public class ActionDaoImpl implements ActionDao{
     @Override
     public List<Action> getAll() {
         return entityManager.createQuery("Select action from Action action").getResultList();
+    }
+
+    @Transactional
+    @Override
+    public List<Action> getForRule(Long ruleId) {
+        Query query = entityManager.createQuery("Select rule.actions from GroovyRule rule where rule.id=:ruleId");
+        query.setParameter("ruleId", ruleId);
+        return query.getResultList();
     }
 
     @Transactional

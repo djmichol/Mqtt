@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -34,11 +35,14 @@ public class GroovyRule implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "groovy_rule_type", nullable = false)
     private VariableType type;
-    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "groovyRules", nullable = false)
+    @ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = "rule_actions",
+            joinColumns = @JoinColumn(name = "rule_fk", referencedColumnName = "groovy_rule_id"),
+            inverseJoinColumns = @JoinColumn(name = "action_fk", referencedColumnName = "action_id")
+    )
     private Set<Action> actions = new HashSet<>(0);
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "groovy_rule_sensor", nullable = false)
+    @JoinColumn(name = "groovy_rule_sensor", nullable = true)
     private Sensor sensor;
 
     public GroovyRule() {

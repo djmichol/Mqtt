@@ -14,7 +14,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class SendMessageToSendMessageResponseConverter extends ResponseConverter<SendMessage, SendMessagesResponseModel> {
     @Override
     public SendMessagesResponseModel convert(SendMessage sendMessage) {
-        if(sendMessage!=null){
+        if (sendMessage != null) {
             SendMessagesResponseModel sendMessagesResponseModel = new SendMessagesResponseModel();
             sendMessagesResponseModel.setDataTimestamp(sendMessage.getTimestamp());
             sendMessagesResponseModel.setMessage(sendMessage.getMessage());
@@ -27,7 +27,9 @@ public class SendMessageToSendMessageResponseConverter extends ResponseConverter
 
     @Override
     protected void prepareLinks(SendMessage sendMessage, SendMessagesResponseModel sendMessagesResponseModel) {
-        Link broker = linkTo(methodOn(ClientsApi.class).getBrokerDetails(sendMessage.getBroker().getId())).withRel("sendMessage.broker");
-        sendMessagesResponseModel.add(broker);
+        if (sendMessage.getBroker() != null) {
+            Link broker = linkTo(methodOn(ClientsApi.class).getBrokerDetails(sendMessage.getBroker().getId())).withRel("sendMessage.broker");
+            sendMessagesResponseModel.add(broker);
+        }
     }
 }
