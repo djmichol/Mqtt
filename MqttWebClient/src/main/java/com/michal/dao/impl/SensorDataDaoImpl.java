@@ -1,5 +1,6 @@
 package com.michal.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -28,6 +29,13 @@ public class SensorDataDaoImpl implements SensorDataDao {
     @Transactional
     public List<SensorData> getAllData() {
         return entityManager.createQuery("Select data from SensorData data").getResultList();
+    }
+
+    @Override
+    public List<SensorData> getAllDataFrom(Date from) {
+        Query query = entityManager.createQuery("Select data from SensorData data where data.timestamp = :dateFrom", SensorData.class);
+        query.setParameter("dateFrom", from);
+        return query.getResultList();
     }
 
     @Override

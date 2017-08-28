@@ -33,8 +33,11 @@ import com.michal.mqtt.api.auth.AuthApi;
 import com.michal.mqtt.api.dictionary.DictionaryApi;
 import com.michal.mqtt.api.networkstructure.ClientsApi;
 import com.michal.mqtt.api.networkstructure.NodesApi;
+import com.michal.mqtt.api.report.ReportApi;
 import com.michal.mqtt.api.utils.RestCallService;
 import com.michal.mqtt.engine.client.ReceivedMessageExtractor;
+import com.michal.mqtt.engine.raport.ReportEngine;
+import com.michal.mqtt.engine.raport.fileGenerator.ReportGenerator;
 import com.michal.mqtt.error.ExceptionController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -104,5 +107,10 @@ public class ApiConfiguration {
     public ActionApi actionApi(ActionDao actionDao, ActionToActionResponseConverter actionToActionResponseConverter, ActionRequestToActionConverter
             actionRequestToActionConverter) {
         return new ActionApi(actionDao, actionToActionResponseConverter, actionRequestToActionConverter);
+    }
+
+    @Bean
+    public ReportApi reportApi(ReportEngine reportEngine, ReportGenerator reportGenerator){
+        return new ReportApi(reportEngine, reportGenerator);
     }
 }

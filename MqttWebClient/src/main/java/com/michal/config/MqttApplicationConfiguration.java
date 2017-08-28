@@ -25,7 +25,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableWebMvc
-@Import({DataBaseConfiguration.class, RepositoryConfig.class, ApiConfiguration.class, ConverterConfiguration.class, DataListenersConfiguration.class})
+@Import({DataBaseConfiguration.class, RepositoryConfig.class, ApiConfiguration.class, ConverterConfiguration.class, DataListenersConfiguration.class, ReportConfiguration.class})
 public class MqttApplicationConfiguration extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     @Bean
